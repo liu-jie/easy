@@ -6,17 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.eirture.easy.MainA">
+    tools:context="com.eirture.easy.main.view.MainA">
+
+
+    <include layout="@layout/h_main_action_bar" />
+
 
     <FrameLayout
         android:id="@+id/container"
         style="@style/Average.Vertical"
         android:layout_width="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lineGray" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="64dp"
         android:layout_gravity="bottom"
         app:menu="@menu/navigation" />
 </LinearLayout>

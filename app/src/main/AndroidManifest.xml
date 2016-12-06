@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainA_">
+        <activity android:name=".main.view.MainA_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

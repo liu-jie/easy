@@ -13,8 +13,8 @@ import org.androidannotations.annotations.ViewById;
 /**
  * Created by eirture on 16-12-4.
  */
-@EFragment(R.layout.f_journal_list)
-public class JournalListF extends MainFragment {
+@EFragment(R.layout.c_recycler_view)
+public class JournalF extends MainFragment {
 
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;

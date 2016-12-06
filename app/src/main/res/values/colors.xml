@@ -10,5 +10,15 @@
     <color name="white">@android:color/white</color>
     <color name="black">@android:color/black</color>
 
+    <color name="backgroundBlack">#212121</color>
+
+    <color name="textBlack">@color/black</color>
+
+
+    <color name="transparentGray">#88eeeeee</color>
+    <color name="transparentWhite">#bbffffff</color>
+    <color name="transparent">@android:color/transparent</color>
+
     <color name="pressGray">#ffaaaaaa</color>
+    <color name="lineGray">#ffaaaaaa</color>
 </resources>
