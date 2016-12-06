@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#546E7A</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="lightDark">#9e9e9e</color>
+
     <color name="textLight">@color/white</color>
     <color name="textLightPress">#88ffffff</color>
 

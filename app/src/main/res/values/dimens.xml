@@ -6,4 +6,5 @@
     <dimen name="custom_actionbar_size">48dp</dimen>
 
     <dimen name="list_item_size">48dp</dimen>
+
 </resources>

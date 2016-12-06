@@ -1,10 +1,17 @@
 package com.eirture.easy.base.views;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 /**
  * Created by eirture on 16-12-4.
  */
 
 public class BaseActivity extends AppCompatActivity {
+
+
+    public void back(View view) {
+        this.finish();
+    }
+
 }
