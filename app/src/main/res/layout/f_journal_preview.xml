@@ -8,7 +8,9 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
         <WebView
             android:id="@+id/wvMarkdown"
@@ -25,7 +27,6 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:src="@drawable/ic_mode_edit"
         app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="bottom|right|end"
-        />
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

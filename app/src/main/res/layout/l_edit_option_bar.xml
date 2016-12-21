@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/edit_bar_size"
+    android:background="@color/bgGray"
+    android:orientation="horizontal">
+
+    <com.eirture.easy.base.widget.HorizontalScrollViewPro
+        android:id="@+id/hsv_edit_options"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_photo" />
+
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_link" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_b" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_italic" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_quote" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_topic" />
+
+            <TextView
+                style="@style/EditBarButtonStyle.Text"
+                android:text="*" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_line" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_link" />
+
+            <ImageView
+                style="@style/EditBarButtonStyle"
+                android:src="@drawable/ic_markdown_link" />
+
+        </LinearLayout>
+
+    </com.eirture.easy.base.widget.HorizontalScrollViewPro>
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_vertical_line" />
+
+    <ImageView
+        android:id="@+id/btn_scroll"
+        style="@style/EditBarButtonStyle"
+        android:rotation="180"
+        android:src="@drawable/ic_markdown_allow" />
+
+</LinearLayout>

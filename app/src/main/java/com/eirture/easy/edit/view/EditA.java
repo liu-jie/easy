@@ -3,9 +3,11 @@ package com.eirture.easy.edit.view;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
+import com.eirture.easy.base.views.BaseFragment;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -20,14 +22,17 @@ public class EditA extends BaseActivity {
     @ViewById
     Toolbar toolbar;
 
+    private BaseFragment currentF;
     private JournalPreviewF previewF;
+    private JournalEditF editF;
     private FragmentManager fm;
 
     @AfterInject
     void init() {
         previewF = JournalPreviewF_.builder().build();
-        fm = getSupportFragmentManager();
+        editF = JournalEditF_.builder().build();
 
+        fm = getSupportFragmentManager();
 
     }
 
@@ -36,10 +41,7 @@ public class EditA extends BaseActivity {
         setSupportActionBar(toolbar);
         initToolbar();
 
-
-        fm.beginTransaction()
-                .replace(R.id.fl_container, previewF)
-                .commit();
+        changeFragment(editF);
     }
 
     private void initToolbar() {
@@ -47,5 +49,36 @@ public class EditA extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_preview:
+                    if (currentF != previewF) {
+                        previewF.setContent(editF.getContent());
+                        changeFragment(previewF);
+                    } else {
+                        changeFragment(editF);
+                    }
+                    break;
+                case R.id.menu_finish:
+                    break;
+            }
+            return true;
+        });
     }
+
+    private void changeFragment(BaseFragment fragment) {
+        if (currentF == fragment)
+            return;
+
+        fm.beginTransaction()
+                .replace(R.id.fl_container, currentF = fragment)
+                .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.editor, menu);
+        return true;
+    }
+
 }

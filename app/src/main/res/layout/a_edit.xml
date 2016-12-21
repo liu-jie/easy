@@ -14,11 +14,14 @@
         app:navigationIcon="@drawable/ic_arrow_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="2016-12-6"
-        app:titleTextColor="@color/textBlack" />
+        app:titleTextColor="@color/textBlack">
+
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -23,4 +23,6 @@
 
     <color name="pressGray">#ffaaaaaa</color>
     <color name="lineGray">#ffaaaaaa</color>
+
+    <color name="bgGray">#ffeeeeee</color>
 </resources>

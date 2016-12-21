@@ -2,6 +2,8 @@ package com.eirture.easy.main.view;
 
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ public class MainA extends BaseActivity {
     @ViewById(R.id.navigation)
     BottomNavigationView navigationView;
 
+    @ViewById
+    Toolbar toolbar;
+
     @ViewById(R.id.btn_left)
     TextView tvTitle;
 
@@ -41,6 +46,7 @@ public class MainA extends BaseActivity {
 
     @AfterViews
     void initViews() {
+        setupToolbar();
         changePage(0);
         RxBottomNavigationView.itemSelections(navigationView)
                 .subscribe(menuItem -> changePage(0));
@@ -48,6 +54,13 @@ public class MainA extends BaseActivity {
                 .subscribe(aVoid -> {
                     Toast.makeText(this, "show ", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
     }
 
     private void changePage(int index) {
