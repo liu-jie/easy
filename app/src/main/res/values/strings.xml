@@ -6,4 +6,6 @@
     <string name="loading">加载</string>
     <string name="preview">预览</string>
     <string name="finish">完成</string>
+    <string name="ok">确定</string>
+    <string name="link_name_cannot_empty">链接名称不能为空</string>
 </resources>

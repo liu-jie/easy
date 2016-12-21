@@ -1,14 +1,21 @@
 package com.eirture.easy.edit.view;
 
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eirture.easy.R;
+import com.eirture.easy.base.utils.EditorUtil;
+import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.base.views.BusFragment;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -52,6 +59,85 @@ public class JournalEditF extends BusFragment {
         if (scrollbar) {
             hsvEditOptionBar.smoothScrollTo(rAngle == 0 ? hsvEditOptionBar.getRight() : hsvEditOptionBar.getLeft(), 0);
         }
+    }
+
+
+    @Click(R.id.op_bold)
+    void clickBold() {
+        insertText("**");
+    }
+
+    @Click(R.id.op_italic)
+    void clickItalic() {
+        insertText("*");
+    }
+
+    @Click(R.id.op_quote)
+    void clickQuote() {
+        insertStart(">", false);
+    }
+
+    @Click(R.id.op_head)
+    void clickHead() {
+        insertStart("#", true);
+    }
+
+    @Click(R.id.op_list_item)
+    void clickListItem() {
+        insertStart("-", false);
+    }
+
+    @Click(R.id.op_link)
+    void clickLink() {
+        initLinkDialog();
+        addLinkDialog.show();
+    }
+
+
+    AlertDialog addLinkDialog;
+    TextView etLinkTitle, etLinkAddress;
+
+    private void initLinkDialog() {
+        if (addLinkDialog != null) {
+            etLinkAddress.setText("");
+            etLinkTitle.setText("");
+            return;
+        }
+
+        View content = getActivity().getLayoutInflater().inflate(R.layout.p_edit_link, null);
+        etLinkAddress = Views.find(content, R.id.aet_link_address);
+        etLinkTitle = Views.find(content, R.id.aet_link_name);
+
+        addLinkDialog = new AlertDialog.Builder(getContext())
+                .setView(content)
+                .setPositiveButton(R.string.ok,
+                        (dialog, which) -> {
+                            String linkTitle = etLinkTitle.getText().toString();
+                            String linkStr = etLinkAddress.getText().toString();
+                            if ("".equals(linkTitle)) {
+                                Toast.makeText(getContext(), R.string.link_name_cannot_empty, Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            if ("".equals(linkStr))
+                                return;
+
+                            if (!(linkStr.startsWith("http://") || linkStr.startsWith("https://"))) {
+                                linkStr = "http://" + linkStr;
+                            }
+                            EditorUtil.insert2EditText(etContent, String.format("[%s](%s)", linkTitle, linkStr));
+                        })
+                .create();
+
+    }
+
+
+    private void insertText(@NonNull String l) {
+        EditorUtil.option2EditText(etContent, l, l);
+    }
+
+    private void insertStart(@NonNull String startStr, boolean repeatable) {
+        EditorUtil.insert2EditTextCurrentLine(etContent, startStr, repeatable);
     }
 
     public String getContent() {

@@ -17,35 +17,38 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/op_photo"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_photo" />
 
 
             <ImageView
+                android:id="@+id/op_link"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_link" />
 
             <ImageView
+                android:id="@+id/op_bold"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_b" />
 
             <ImageView
+                android:id="@+id/op_italic"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_italic" />
 
             <ImageView
+                android:id="@+id/op_quote"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_quote" />
 
             <ImageView
+                android:id="@+id/op_head"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_topic" />
 
-            <TextView
-                style="@style/EditBarButtonStyle.Text"
-                android:text="*" />
-
             <ImageView
+                android:id="@+id/op_list_item"
                 style="@style/EditBarButtonStyle"
                 android:src="@drawable/ic_markdown_line" />
 

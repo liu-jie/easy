@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/aet_link_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="链接名称" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/aet_link_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="链接地址"
+            android:inputType="textWebEditText" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
