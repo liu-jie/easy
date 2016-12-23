@@ -51,15 +51,15 @@ public class EditA extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.menu_preview:
+                case R.id.menu_btn:
                     if (currentF != previewF) {
                         previewF.setContent(editF.getContent());
                         changeFragment(previewF);
+                        item.setTitle(R.string.edit);
                     } else {
                         changeFragment(editF);
+                        item.setTitle(R.string.finish);
                     }
-                    break;
-                case R.id.menu_finish:
                     break;
             }
             return true;
