@@ -8,7 +8,7 @@ import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.adapter.holder.JournalHeadHolder;
 import com.eirture.easy.main.adapter.holder.JournalHolder;
 import com.eirture.easy.main.model.Journal;
-import com.eirture.easy.main.model.Notebook;
+import com.eirture.easy.main.model.NotebookDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, JournalHeadHolder> {
-    private Notebook notebook;
+    private NotebookDB notebook;
     private List<Journal> journals = new ArrayList<>();
 
     @Override

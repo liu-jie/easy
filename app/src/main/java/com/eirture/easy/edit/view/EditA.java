@@ -7,11 +7,13 @@ import android.view.Menu;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
-import com.eirture.easy.base.views.BaseFragment;
+import com.eirture.easy.edit.EditP;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -19,29 +21,44 @@ import org.androidannotations.annotations.ViewById;
  */
 @EActivity(R.layout.a_edit)
 public class EditA extends BaseActivity {
+
+    @Extra
+    int journalId = -1;  // if create new journal extra journalId is empty;
+
     @ViewById
     Toolbar toolbar;
 
-    private BaseFragment currentF;
+    private AbstractEditFragment currentF;
     private JournalPreviewF previewF;
     private JournalEditF editF;
     private FragmentManager fm;
+
+    private String editContent;
+
+    @Bean
+    EditP editP;
 
     @AfterInject
     void init() {
         previewF = JournalPreviewF_.builder().build();
         editF = JournalEditF_.builder().build();
-
         fm = getSupportFragmentManager();
-
     }
 
     @AfterViews
     void initViews() {
         setSupportActionBar(toolbar);
         initToolbar();
+        if (journalId != -1) {
+            // read an existent journal
+            editP.readJournal(journalId);
 
-        changeFragment(editF);
+            // to do this when got journal data
+            changeFragment(previewF);
+        } else {
+            // create new journal
+            changeFragment(editF);
+        }
     }
 
     private void initToolbar() {
@@ -52,23 +69,24 @@ public class EditA extends BaseActivity {
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_btn:
-                    if (currentF != previewF) {
-                        previewF.setContent(editF.getContent());
-                        changeFragment(previewF);
-                        item.setTitle(R.string.edit);
-                    } else {
-                        changeFragment(editF);
-                        item.setTitle(R.string.finish);
+                    if (currentF == editF) {
+                        editContent = editF.getContent();
                     }
+                    changeFragment(currentF == editF ? previewF : editF);
                     break;
             }
             return true;
         });
     }
 
-    private void changeFragment(BaseFragment fragment) {
+    private void changeFragment(AbstractEditFragment fragment) {
         if (currentF == fragment)
             return;
+        Menu menu;
+        if ((menu = toolbar.getMenu()).size() > 0) {
+            menu.getItem(0).setTitle(fragment == previewF ? R.string.edit : R.string.finish);
+        }
+        fragment.setContent(editContent);
 
         fm.beginTransaction()
                 .replace(R.id.fl_container, currentF = fragment)

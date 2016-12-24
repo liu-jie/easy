@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.eirture.easy.R;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.utils.Views;
-import com.eirture.easy.base.views.BusFragment;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
 
 import org.androidannotations.annotations.AfterViews;
@@ -23,20 +22,21 @@ import org.androidannotations.annotations.ViewById;
  * Created by eirture on 16-12-6.
  */
 @EFragment(R.layout.f_journal_edit)
-public class JournalEditF extends BusFragment {
-
+public class JournalEditF extends AbstractEditFragment {
 
     @ViewById(R.id.et_content)
     JournalEditText etContent;
-
     @ViewById(R.id.btn_scroll)
     ImageView btnScrollEnd;
 
     @ViewById(R.id.hsv_edit_options)
     HorizontalScrollViewPro hsvEditOptionBar;
 
+    private String contentStr;
+
     @AfterViews
     void initViews() {
+        etContent.setText(contentStr);
         hsvEditOptionBar.addOnScrollChangedListener((l, t, oldl, oldt) -> {
             View child = hsvEditOptionBar.getChildAt(hsvEditOptionBar.getChildCount() - 1);
             int diff = child.getRight() - (hsvEditOptionBar.getWidth() + l);
@@ -60,7 +60,6 @@ public class JournalEditF extends BusFragment {
             hsvEditOptionBar.smoothScrollTo(rAngle == 0 ? hsvEditOptionBar.getRight() : hsvEditOptionBar.getLeft(), 0);
         }
     }
-
 
     @Click(R.id.op_bold)
     void clickBold() {
@@ -144,7 +143,14 @@ public class JournalEditF extends BusFragment {
         if (etContent == null)
             return "";
 
-        return etContent.getText().toString();
+        return contentStr = etContent.getText().toString();
     }
 
+    @Override
+    public void setContent(@NonNull String contentStr) {
+        if (contentStr == null)
+            return;
+
+        this.contentStr = contentStr;
+    }
 }

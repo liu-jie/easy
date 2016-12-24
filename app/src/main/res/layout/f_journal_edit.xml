@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <com.eirture.easy.edit.view.JournalEditText
         android:id="@+id/et_content"
         android:layout_width="match_parent"

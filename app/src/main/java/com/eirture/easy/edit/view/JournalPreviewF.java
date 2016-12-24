@@ -4,7 +4,6 @@ import android.webkit.WebView;
 
 import com.commonsware.cwac.anddown.AndDown;
 import com.eirture.easy.R;
-import com.eirture.easy.base.views.BusFragment;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -15,7 +14,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by eirture on 16-12-6.
  */
 @EFragment(R.layout.f_journal_preview)
-public class JournalPreviewF extends BusFragment {
+public class JournalPreviewF extends AbstractEditFragment {
 
     @ViewById
     WebView wvMarkdown;
@@ -35,7 +34,7 @@ public class JournalPreviewF extends BusFragment {
         System.out.println(content);
     }
 
-
+    @Override
     public void setContent(String contentStr) {
         this.contentStr = contentStr;
     }
