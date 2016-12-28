@@ -1,7 +1,9 @@
 package com.eirture.easy.edit;
 
+import com.eirture.easy.base.ObserverImpl;
 import com.eirture.easy.base.bus.SingleBus;
 import com.eirture.easy.edit.data.EditR;
+import com.eirture.easy.edit.event.QueryJournalE;
 import com.eirture.easy.main.model.Journal;
 
 import org.androidannotations.annotations.Bean;
@@ -32,7 +34,7 @@ public class EditP {
     public void readJournal(int journalId) {
         editR.queryJournal(journalId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new ObserverImpl<>(bus, QueryJournalE.class));
     }
 
     public void deleteJournal(int journalId) {

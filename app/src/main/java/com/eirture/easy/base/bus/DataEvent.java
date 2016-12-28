@@ -6,7 +6,7 @@ package com.eirture.easy.base.bus;
 
 public abstract class DataEvent<T> extends Event {
     public T data;
-
+    public boolean isPrelude = false;
 
     public DataEvent() {
     }

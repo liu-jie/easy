@@ -8,6 +8,9 @@ import android.view.Menu;
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
 import com.eirture.easy.edit.EditP;
+import com.eirture.easy.edit.event.QueryJournalE;
+import com.eirture.easy.main.model.Journal;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -24,6 +27,8 @@ public class EditA extends BaseActivity {
 
     @Extra
     int journalId = -1;  // if create new journal extra journalId is empty;
+    @Extra
+    int notebookId = 0;
 
     @ViewById
     Toolbar toolbar;
@@ -34,6 +39,7 @@ public class EditA extends BaseActivity {
     private FragmentManager fm;
 
     private String editContent;
+    private Journal journal;
 
     @Bean
     EditP editP;
@@ -59,6 +65,11 @@ public class EditA extends BaseActivity {
             // create new journal
             changeFragment(editF);
         }
+    }
+
+    @Subscribe
+    public void receiveQueryJournal(QueryJournalE e) {
+        
     }
 
     private void initToolbar() {

@@ -12,6 +12,7 @@ import com.eirture.easy.R;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -48,6 +49,9 @@ public class JournalEditF extends AbstractEditFragment {
         });
 
         btnScrollEnd.setOnClickListener(v -> rotationEditArrowButton(true));
+
+//        RxTextView.textChangeEvents(etContent)
+
     }
 
     private void rotationEditArrowButton(boolean scrollbar) {

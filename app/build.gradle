@@ -18,6 +18,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "SIMPERIUM_APP", "\"${project.simperiumApp}\""
+            buildConfigField "String", "SIMPERIUM_KEY", "\"${project.simperiumKey}\""
         }
     }
 
@@ -25,6 +28,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    ["simperiumApp", "simperiumKey"].each { property ->
+        if (!project.hasProperty(property))
+            throw new ProjectConfigurationException("Project build missing ${property} property", null)
+    }
+
 }
 
 dependencies {
@@ -55,6 +64,8 @@ dependencies {
     compile 'com.google.guava:guava:20.0'
 
     compile 'com.commonsware.cwac:anddown:0.2.4'
+    compile "com.simperium.android:simperium:0.6.8"
+
 
 }
 

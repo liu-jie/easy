@@ -5,4 +5,5 @@ package com.eirture.easy.base.bus;
  */
 
 public abstract class Event {
+    public boolean successful;
 }
