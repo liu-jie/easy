@@ -11,6 +11,8 @@
         android:layout_weight="1"
         android:background="@null"
         android:gravity="top"
+        android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+        android:lineSpacingExtra="4dp"
         android:padding="16dp" />
 
     <include layout="@layout/l_edit_option_bar" />

@@ -5,5 +5,12 @@ package com.eirture.easy.base.bus;
  */
 
 public abstract class Event {
-    public boolean successful;
+    protected boolean successful;
+
+    public Event() {
+    }
+
+    public boolean successful() {
+        return successful;
+    }
 }

@@ -16,23 +16,30 @@ public class ObserverImpl<T> implements Observer<T> {
     private SingleBus bus;
     private Class<? extends DataEvent<T>> clazz;
     private int errorCode = Constant.ERROR_CODE_DEFAULT;
+    private DataEvent<T> event;
 
     public ObserverImpl(@NonNull SingleBus bus, Class<? extends DataEvent<T>> eventClass) {
         this.bus = bus;
         this.clazz = eventClass;
+
+        try {
+            event = clazz.newInstance();
+        } catch (InstantiationException e) {
+            System.err.println(e.toString());
+        } catch (IllegalAccessException e) {
+            System.err.println(e.toString());
+        }
+
     }
 
     // 通知现在开始
     public ObserverImpl<T> prelude() {
         try {
-            DataEvent event = clazz.newInstance();
-            event.isPrelude = true;
+            DataEvent event = clazz.newInstance().prelude();
             bus.post(event);
         } catch (InstantiationException e) {
-//            e.printStackTrace();
             System.err.println(e.toString());
         } catch (IllegalAccessException e) {
-//            e.printStackTrace();
             System.err.println(e.toString());
         }
 
@@ -51,28 +58,12 @@ public class ObserverImpl<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        bus.post(new Error(errorCode, e.getMessage()));
+        bus.post(event.error(new Error(errorCode, e.getMessage())));
     }
 
     @Override
     public void onNext(T t) {
-        DataEvent<T> event = generateEvent(t);
-        bus.post(event);
+        bus.post(event.success(t));
 
-    }
-
-    private DataEvent<T> generateEvent(T t) {
-        DataEvent<T> event = null;
-        try {
-            event = clazz.newInstance();
-            event.data = t;
-            event.successful = true;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return event;
     }
 }

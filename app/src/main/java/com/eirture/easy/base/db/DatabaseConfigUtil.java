@@ -1,6 +1,5 @@
 package com.eirture.easy.base.db;
 
-import com.eirture.easy.main.model.Journal;
 import com.eirture.easy.main.model.NotebookDB;
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 public class DatabaseConfigUtil extends OrmLiteConfigUtil {
 
     private static final Class<?>[] classes = new Class[]{
-            Journal.class,
             NotebookDB.class
     };
 
