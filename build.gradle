@@ -17,6 +17,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+        maven { url "http://simperium.github.io/simplenote-android" }
     }
 }
 
