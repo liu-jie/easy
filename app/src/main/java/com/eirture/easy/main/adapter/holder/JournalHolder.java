@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.utils.DateUtil;
 import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.base.widget.ClickableViewHolder;
 import com.eirture.easy.main.model.Journal;
@@ -39,8 +38,7 @@ public class JournalHolder extends ClickableViewHolder {
         if (journal == null)
             return;
         tvDescription.setText(journal.getContentPreview());
-        setDateSpan(tvDate.getEditableText(), DateUtil.getJournalItemDate(journal.getDate()));
-
+//        setDateSpan(tvDate.getEditableText(), DateUtil.getJournalItemDate(journal.getDate()));
     }
 
     private void setDateSpan(Editable editable, String content) {

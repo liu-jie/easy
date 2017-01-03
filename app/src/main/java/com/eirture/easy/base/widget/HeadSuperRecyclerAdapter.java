@@ -72,7 +72,7 @@ public abstract class HeadSuperRecyclerAdapter<VH extends RecyclerView.ViewHolde
 
     @Override
     public final int getItemCount() {
-        return getCount() + (isLoading ? 1 : 2);
+        return getCount() + (isLoading ? 2 : 1);
     }
 
     public abstract int getCount();

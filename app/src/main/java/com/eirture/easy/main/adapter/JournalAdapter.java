@@ -21,7 +21,6 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     private Notebook notebook;
     private List<Journal> journals = new ArrayList<>();
 
-
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
         journals = notebook.journals();
@@ -34,11 +33,7 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public void onBindHolder(JournalHolder holder, int position) {
-        if (position < journals.size()) {
-            holder.bindData(journals.get(position));
-        } else {
-            System.out.println("out of journals size!! ---------" + position);
-        }
+        holder.bindData(journals.get(position));
     }
 
     @Override
