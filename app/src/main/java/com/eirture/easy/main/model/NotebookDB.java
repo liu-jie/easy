@@ -9,12 +9,11 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class NotebookDB {
     @DatabaseField(generatedId = true, canBeNull = false)
-    public int id = 1;
+    public int id;
     @DatabaseField
     public String title;
     @DatabaseField
     public int color;
-
 
     public static NotebookDB default_note;
 

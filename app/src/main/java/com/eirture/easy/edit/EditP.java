@@ -37,6 +37,7 @@ public class EditP {
 
     @Background(delay = AUTO_SAVE_DELAY_MILLIS, id = AUTO_SAVE_TASK_ID)
     protected void autoSave(Journal journal) {
+        System.out.println("save journal: " + journal.getContent());
         editR.saveJournal(journal);
     }
 

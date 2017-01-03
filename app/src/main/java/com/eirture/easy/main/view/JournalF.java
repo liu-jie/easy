@@ -30,7 +30,7 @@ public class JournalF extends MainFragment {
     @Bean
     NotebookP notebookP;
 
-    private int notebookId;
+    private int notebookId = -1;
 
     @AfterViews
     void initViews() {
@@ -39,8 +39,8 @@ public class JournalF extends MainFragment {
             mAdapter = new JournalAdapter();
             rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-        refreshNotebookId();
         rvContent.setAdapter(mAdapter);
+        refreshNotebookId();
     }
 
     private void refreshNotebookId() {
@@ -64,6 +64,7 @@ public class JournalF extends MainFragment {
     }
 
     private void updateNotebook(Notebook notebook) {
+        System.out.println("updateNotebook: " + notebook.getCount());
         mAdapter.updateNotebook(notebook);
     }
 

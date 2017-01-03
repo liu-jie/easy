@@ -16,7 +16,7 @@ public class Journal {
 
 
     @DatabaseField(generatedId = true, canBeNull = false)
-    public int id = 1;
+    public int id;
     @DatabaseField
     private String title;
     @DatabaseField(canBeNull = false)

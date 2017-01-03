@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class Notebook {
-    public static final int DEFAULT_NOTEBOOK_ID = 0;
+    public static final int DEFAULT_NOTEBOOK_ID = 1;
     private NotebookDB notebookDB;
     private List<Journal> journals;
     private int count = 0;

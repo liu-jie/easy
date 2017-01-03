@@ -6,6 +6,7 @@ import com.eirture.easy.main.model.Notebook;
 import com.eirture.easy.main.model.NotebookDB;
 import com.j256.ormlite.dao.Dao;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.ormlite.annotations.OrmLiteDao;
 
@@ -26,6 +27,15 @@ public class NotebookR {
 
     @OrmLiteDao(helper = DatabaseHelper.class)
     Dao<Journal, Integer> journalDao;
+
+    @AfterInject
+    protected void init() {
+        try {
+            nbDao.createIfNotExists(NotebookDB.generateDefaultNotebook());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void updateNotebook(NotebookDB dbNotebook) {
         try {
@@ -87,7 +97,6 @@ public class NotebookR {
         return Observable.<NotebookDB>create(
                 subscriber -> {
                     try {
-
                         NotebookDB nb = nbDao.queryForId(id);
                         if (id == Notebook.DEFAULT_NOTEBOOK_ID && nb == null) {
                             nbDao.createOrUpdate(nb = NotebookDB.generateDefaultNotebook());
