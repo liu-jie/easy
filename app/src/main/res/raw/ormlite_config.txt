@@ -1,5 +1,5 @@
 #
-# generated on 2016/12/24 01:31:24
+# generated on 2016/12/31 02:37:49
 #
 # --table-start--
 dataClass=com.eirture.easy.main.model.Journal
@@ -7,6 +7,7 @@ tableName=journal
 # --table-fields-start--
 # --field-start--
 fieldName=id
+canBeNull=false
 generatedId=true
 # --field-end--
 # --field-start--
@@ -33,7 +34,7 @@ tableName=notebookdb
 # --table-fields-start--
 # --field-start--
 fieldName=id
-id=true
+canBeNull=false
 generatedId=true
 # --field-end--
 # --field-start--

@@ -2,6 +2,9 @@ package com.eirture.easy.edit.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -9,13 +12,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
+import com.eirture.easy.base.bus.Result;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
+import com.eirture.easy.edit.EditP;
+import com.eirture.easy.edit.event.QueryJournalE;
+import com.eirture.easy.main.model.Journal;
+import com.eirture.easy.main.model.Notebook;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.squareup.otto.Subscribe;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -23,6 +36,11 @@ import org.androidannotations.annotations.ViewById;
  */
 @EFragment(R.layout.f_journal_edit)
 public class JournalEditF extends AbstractEditFragment {
+
+    @FragmentArg
+    int journalId = -1;
+    @FragmentArg
+    int noteId = Notebook.DEFAULT_NOTEBOOK_ID;
 
     @ViewById(R.id.et_content)
     JournalEditText etContent;
@@ -33,9 +51,22 @@ public class JournalEditF extends AbstractEditFragment {
     HorizontalScrollViewPro hsvEditOptionBar;
 
     private String contentStr;
+    private Journal mJournal;
+
+    @Bean
+    EditP editP;
+
+    @AfterInject
+    protected void init() {
+        if (journalId == -1) {
+            mJournal = Journal.newInstance(noteId);
+        } else {
+            editP.readJournal(journalId);
+        }
+    }
 
     @AfterViews
-    void initViews() {
+    protected void initViews() {
         etContent.setText(contentStr);
         hsvEditOptionBar.addOnScrollChangedListener((l, t, oldl, oldt) -> {
             View child = hsvEditOptionBar.getChildAt(hsvEditOptionBar.getChildCount() - 1);
@@ -48,6 +79,13 @@ public class JournalEditF extends AbstractEditFragment {
         });
 
         btnScrollEnd.setOnClickListener(v -> rotationEditArrowButton(true));
+
+        RxTextView.afterTextChangeEvents(etContent)
+                .doOnNext(textViewAfterTextChangeEvent -> {
+                    setTitleSpan(textViewAfterTextChangeEvent.editable());
+                    autoSave();
+                })
+                .subscribe();
     }
 
     private void rotationEditArrowButton(boolean scrollbar) {
@@ -59,6 +97,27 @@ public class JournalEditF extends AbstractEditFragment {
         if (scrollbar) {
             hsvEditOptionBar.smoothScrollTo(rAngle == 0 ? hsvEditOptionBar.getRight() : hsvEditOptionBar.getLeft(), 0);
         }
+    }
+
+    private void refresh() {
+        if (!isVisible() || mJournal == null)
+            return;
+        etContent.setText(mJournal.getContent());
+    }
+
+    @Subscribe
+    public void loadJournalEvent(QueryJournalE e) {
+        Result.<Journal>create()
+                .successFunction(action -> {
+                    mJournal = action;
+                    refresh();
+                })
+                .errorFunction(action -> System.out.println(action))
+                .result(e);
+    }
+
+    private void autoSave() {
+        editP.updateJournal(mJournal.setContent(getContent()));
     }
 
     @Click(R.id.op_bold)
@@ -139,11 +198,24 @@ public class JournalEditF extends AbstractEditFragment {
         EditorUtil.insert2EditTextCurrentLine(etContent, startStr, repeatable);
     }
 
-    public String getContent() {
-        if (etContent == null)
-            return "";
 
-        return contentStr = etContent.getText().toString();
+    private void setTitleSpan(Editable editable) {
+        // Set the note title to be a larger size
+        // Remove any existing size spans
+        RelativeSizeSpan spans[] = editable.getSpans(0, editable.length(), RelativeSizeSpan.class);
+        for (RelativeSizeSpan span : spans) {
+            editable.removeSpan(span);
+        }
+        int newLinePosition = getContent().indexOf("\n");
+        if (newLinePosition == 0)
+            return;
+        editable.setSpan(new RelativeSizeSpan(1.227f), 0, (newLinePosition > 0) ? newLinePosition : editable.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    }
+
+    public String getContent() {
+        if (etContent == null || etContent == null)
+            return "";
+        return etContent.getText().toString().trim();
     }
 
     @Override

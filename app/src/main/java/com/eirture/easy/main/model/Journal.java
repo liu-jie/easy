@@ -10,25 +10,104 @@ import java.util.Date;
  */
 @DatabaseTable
 public class Journal {
-    @DatabaseField(generatedId = true)
-    public int id;
-    @DatabaseField
-    public String title;
-    @DatabaseField
-    public Date date;
-    @DatabaseField
-    public String pictures; //对应图片的表
-    @DatabaseField
-    public int noteId; //笔记本
-    @DatabaseField
-    public String content;
+    public static final String FIELD_NOTE_ID = "noteId";
+    public static final String NEW_LINE = "\n";
+    private static final String SPACE = " ";
 
-    public static Journal newInstance(String content, int noteId) {
+
+    @DatabaseField(generatedId = true, canBeNull = false)
+    public int id = 1;
+    @DatabaseField
+    private String title;
+    @DatabaseField(canBeNull = false)
+    private Date date;
+    @DatabaseField
+    private String pictures; //对应图片的表
+    @DatabaseField(canBeNull = false)
+    private int noteId; //笔记本
+    @DatabaseField
+    private String content;
+
+    private String mTitle = "";
+    private String mContentPreview = "";
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String pictures) {
+        this.pictures = pictures;
+    }
+
+    public int getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
+
+
+    public String getContent() {
+        return content;
+    }
+
+    public Journal setContent(String content) {
+        this.content = content;
+        refreshPreviewContent();
+        return this;
+    }
+
+    public String getContentPreview() {
+        return mContentPreview;
+    }
+
+    private void refreshPreviewContent() {
+        int firstNewLinePosition = content.indexOf(NEW_LINE);
+        if (firstNewLinePosition > -1 && firstNewLinePosition < 200) {
+            mTitle = content.substring(0, firstNewLinePosition).trim();
+
+            if (firstNewLinePosition < content.length()) {
+                mContentPreview = content.substring(firstNewLinePosition, content.length());
+                mContentPreview = mContentPreview.replace(NEW_LINE, SPACE).replace(SPACE + SPACE, SPACE).trim();
+            } else {
+                mContentPreview = content;
+            }
+        } else {
+            mTitle = content;
+            mContentPreview = content;
+        }
+    }
+
+    public static Journal newInstance(int noteId) {
         Journal j = new Journal();
-        j.content = content;
+        j.content = "";
         j.date = new Date();
         j.noteId = noteId;
-
         return j;
     }
 }

@@ -8,7 +8,7 @@ import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.adapter.holder.JournalHeadHolder;
 import com.eirture.easy.main.adapter.holder.JournalHolder;
 import com.eirture.easy.main.model.Journal;
-import com.eirture.easy.main.model.NotebookDB;
+import com.eirture.easy.main.model.Notebook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,26 +18,37 @@ import java.util.List;
  */
 
 public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, JournalHeadHolder> {
-    private NotebookDB notebook;
+    private Notebook notebook;
     private List<Journal> journals = new ArrayList<>();
+
+
+    public void updateNotebook(Notebook notebook) {
+        this.notebook = notebook;
+        journals = notebook.journals();
+    }
 
     @Override
     public int getCount() {
-        return 0;
+        return journals.size();
     }
 
     @Override
     public void onBindHolder(JournalHolder holder, int position) {
-
+        if (position < journals.size()) {
+            holder.bindData(journals.get(position));
+        } else {
+            System.out.println("out of journals size!! ---------" + position);
+        }
     }
 
     @Override
     public void onBindHeadHolder(JournalHeadHolder headHolder, int position) {
         headHolder.btnAdd.setOnClickListener(v ->
                 EditA_.intent(headHolder.btnAdd.getContext()).start());
-
         headHolder.btnPhoto.setOnClickListener(v ->
                 Toast.makeText(headHolder.btnPhoto.getContext(), "new photo journal", Toast.LENGTH_SHORT).show());
+
+        headHolder.bindData(notebook);
     }
 
     @Override

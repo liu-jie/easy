@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
+import com.eirture.easy.main.model.Notebook;
 import com.jakewharton.rxbinding.support.design.widget.RxBottomNavigationView;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -23,7 +24,6 @@ import java.util.List;
 @EActivity(R.layout.a_main)
 public class MainA extends BaseActivity {
 
-
     @ViewById(R.id.navigation)
     BottomNavigationView navigationView;
 
@@ -37,11 +37,14 @@ public class MainA extends BaseActivity {
     MainFragment currentF;
     List<MainFragment> fragments;
 
+    private int notebookId;
+
     @AfterInject
     void init() {
         fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
         fragments.add(JournalF_.builder().build());
+        notebookId = Notebook.DEFAULT_NOTEBOOK_ID;
     }
 
     @AfterViews
@@ -74,4 +77,7 @@ public class MainA extends BaseActivity {
                 .commit();
     }
 
+    public int getNotebookId() {
+        return notebookId;
+    }
 }

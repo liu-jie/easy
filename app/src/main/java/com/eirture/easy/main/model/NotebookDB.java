@@ -8,10 +8,23 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class NotebookDB {
-    @DatabaseField(id = true, generatedId = true)
-    public int id;
+    @DatabaseField(generatedId = true, canBeNull = false)
+    public int id = 1;
     @DatabaseField
     public String title;
     @DatabaseField
     public int color;
+
+
+    public static NotebookDB default_note;
+
+    public static NotebookDB generateDefaultNotebook() {
+        if (default_note == null) {
+            default_note = new NotebookDB();
+            default_note.id = Notebook.DEFAULT_NOTEBOOK_ID;
+            default_note.title = "全部";
+        }
+
+        return default_note;
+    }
 }

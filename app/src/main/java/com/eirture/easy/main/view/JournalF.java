@@ -1,12 +1,20 @@
 package com.eirture.easy.main.view;
 
+import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.eirture.easy.R;
+import com.eirture.easy.base.bus.Result;
+import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
+import com.eirture.easy.main.event.GetNotebookE;
+import com.eirture.easy.main.model.Notebook;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -18,17 +26,46 @@ public class JournalF extends MainFragment {
 
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;
-
     JournalAdapter mAdapter;
+    @Bean
+    NotebookP notebookP;
+
+    private int notebookId;
 
     @AfterViews
     void initViews() {
+
         if (mAdapter == null) {
             mAdapter = new JournalAdapter();
             rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-
+        refreshNotebookId();
         rvContent.setAdapter(mAdapter);
     }
+
+    private void refreshNotebookId() {
+        Activity activity = getActivity();
+        if (activity instanceof MainA) {
+            int nbId = ((MainA) activity).getNotebookId();
+            if (nbId != notebookId) {
+                // notebook is changed. must refresh data;
+                notebookP.getNotebookById(notebookId = nbId);
+            }
+        }
+    }
+
+    private Result<Notebook> getNotebookResult = Result.<Notebook>create()
+            .successFunction(action -> updateNotebook(action))
+            .errorFunction(action -> Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show());
+
+    @Subscribe
+    public void loadNotebookEvent(GetNotebookE e) {
+        getNotebookResult.result(e);
+    }
+
+    private void updateNotebook(Notebook notebook) {
+        mAdapter.updateNotebook(notebook);
+    }
+
 
 }

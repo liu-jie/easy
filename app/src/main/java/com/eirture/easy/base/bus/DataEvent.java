@@ -6,12 +6,30 @@ package com.eirture.easy.base.bus;
 
 public abstract class DataEvent<T> extends Event {
     public T data;
+    public Error error;
+    private boolean isPrelude;
 
-
-    public DataEvent() {
+    public boolean isPrelude() {
+        return isPrelude;
     }
 
-    public DataEvent(T data) {
+    public <E extends DataEvent> E success(T data) {
+        isPrelude = false;
+        successful = true;
         this.data = data;
+        return (E) this;
     }
+
+    public <E extends DataEvent> E error(Error error) {
+        isPrelude = false;
+        successful = false;
+        this.error = error;
+        return (E) this;
+    }
+
+    public <E extends DataEvent> E prelude() {
+        isPrelude = true;
+        return (E) this;
+    }
+
 }

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.utils.Views;
-import com.eirture.easy.main.model.NotebookDB;
+import com.eirture.easy.main.model.Notebook;
 
 /**
  * Created by eirture on 16-12-4.
@@ -28,9 +28,15 @@ public class JournalHeadHolder extends RecyclerView.ViewHolder {
         btnAdd = Views.find(itemView, R.id.btn_add);
     }
 
-    public void bindData(NotebookDB notebook) {
+    public void bindData(Notebook notebook) {
         if (notebook == null)
             return;
+
+        labCount.setText(String.valueOf(notebook.getCount()));
+        labDays.setText(String.valueOf(notebook.getDays()));
+        labPhotos.setText(String.valueOf(notebook.getPictures()));
+        labWeek.setText(String.valueOf(notebook.getWeeklyCount()));
+        labToday.setText(String.valueOf(notebook.getTodays()));
 
     }
 
