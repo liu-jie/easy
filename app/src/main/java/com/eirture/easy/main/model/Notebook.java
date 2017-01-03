@@ -3,7 +3,7 @@ package com.eirture.easy.main.model;
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
-import com.eirture.easy.base.utils.DateUtil;
+import com.eirture.rxcommon.dates.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

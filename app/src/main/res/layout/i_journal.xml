@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/sel_btn_gray"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp">
 
     <ImageView
         android:id="@+id/iv_one"
@@ -71,5 +75,6 @@
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:gravity="right"
-        android:text="星期一\n05" />
+        android:text="星期一\n05"
+        android:textSize="12dp" />
 </LinearLayout>

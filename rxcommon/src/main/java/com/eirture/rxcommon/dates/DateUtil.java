@@ -1,7 +1,9 @@
-package com.eirture.easy.base.utils;
+package com.eirture.rxcommon.dates;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.eirture.rxcommon.base.Preconditions.checkNotNull;
 
 public class DateUtil {
     private static final String[] WEEK_DAYS = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
@@ -14,16 +16,19 @@ public class DateUtil {
         return c.getTime().before(date);
     }
 
-    public static String getJournalItemDate(Date date) {
+    public static String getWeekName(Date date) {
         if (date == null)
             return "";
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        return new StringBuffer(getChineseWeekName(cal))
-                .append("\n")
-                .append(cal.get(Calendar.DAY_OF_MONTH))
-                .toString();
+        return getChineseWeekName(cal);
+    }
+
+    public static int getDayOfMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(checkNotNull(date, "date == null"));
+        return cal.get(Calendar.DAY_OF_MONTH) - 1;
     }
 
     private static String getChineseWeekName(Calendar cal) {

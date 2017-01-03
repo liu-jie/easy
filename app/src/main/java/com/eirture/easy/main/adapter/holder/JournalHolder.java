@@ -1,18 +1,18 @@
 package com.eirture.easy.main.adapter.holder;
 
-import android.text.Editable;
-import android.text.Spanned;
-import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.utils.DateUtil;
 import com.eirture.easy.base.widget.ClickableViewHolder;
 import com.eirture.easy.main.model.Journal;
+import com.eirture.rxcommon.dates.DateUtil;
+import com.eirture.rxcommon.texts.SpannableBuilder;
 import com.eirture.rxcommon.utils.Views;
+
+import java.util.Date;
 
 /**
  * Created by eirture on 16-12-4.
@@ -38,19 +38,16 @@ public class JournalHolder extends ClickableViewHolder {
         if (journal == null)
             return;
         tvDescription.setText(journal.getContentPreview());
-        tvDate.setText(DateUtil.getJournalItemDate(journal.getDate()));
-//        setDateSpan(tvDate.getEditableText(), DateUtil.getJournalItemDate(journal.getDate()));
-    }
 
-    private void setDateSpan(Editable editable, String content) {
-        RelativeSizeSpan spans[] = editable.getSpans(0, editable.length(), RelativeSizeSpan.class);
-        for (RelativeSizeSpan span : spans) {
-            editable.removeSpan(span);
-        }
-        int newLinePosition = content.indexOf("\n");
-        if (newLinePosition == 0)
-            return;
-        editable.setSpan(new RelativeSizeSpan(1.8f), 0, (newLinePosition > 0) ? newLinePosition : editable.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        Date date = journal.getDate();
+        CharSequence dateStr = SpannableBuilder.createBuilder(tvDate.getContext())
+//                .createStyle().setSize(12).apply()
+                .append(DateUtil.getWeekName(date))
+                .append("\n")
+                .createStyle().setSize(32).setColorResId(R.color.textBlack).apply()
+                .append(String.valueOf(DateUtil.getDayOfMonth(date)))
+                .build();
+        tvDate.setText(dateStr);
     }
 
     @Override
