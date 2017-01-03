@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.utils.Views;
+import com.eirture.rxcommon.utils.Views;
 
 /**
  * Created by Jie on 2016-08-10.

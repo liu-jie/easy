@@ -9,9 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.utils.Views;
+import com.eirture.easy.base.utils.DateUtil;
 import com.eirture.easy.base.widget.ClickableViewHolder;
 import com.eirture.easy.main.model.Journal;
+import com.eirture.rxcommon.utils.Views;
 
 /**
  * Created by eirture on 16-12-4.
@@ -31,13 +32,13 @@ public class JournalHolder extends ClickableViewHolder {
         tvDescription = Views.find(itemView, R.id.tv_description);
         tvExtraDescription = Views.find(itemView, R.id.tv_extra_description);
         tvDate = Views.find(itemView, R.id.tv_date);
-
     }
 
     public void bindData(Journal journal) {
         if (journal == null)
             return;
         tvDescription.setText(journal.getContentPreview());
+        tvDate.setText(DateUtil.getJournalItemDate(journal.getDate()));
 //        setDateSpan(tvDate.getEditableText(), DateUtil.getJournalItemDate(journal.getDate()));
     }
 
@@ -50,7 +51,6 @@ public class JournalHolder extends ClickableViewHolder {
         if (newLinePosition == 0)
             return;
         editable.setSpan(new RelativeSizeSpan(1.8f), 0, (newLinePosition > 0) ? newLinePosition : editable.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.eirture.easy.base.utils;
+package com.eirture.rxcommon.utils;
 
 import android.app.Activity;
 import android.content.Context;

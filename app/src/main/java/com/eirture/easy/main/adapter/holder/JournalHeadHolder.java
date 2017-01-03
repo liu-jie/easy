@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.main.model.Notebook;
+import com.eirture.rxcommon.utils.Views;
 
 /**
  * Created by eirture on 16-12-4.

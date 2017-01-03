@@ -14,12 +14,12 @@ import android.widget.Toast;
 import com.eirture.easy.R;
 import com.eirture.easy.base.bus.Result;
 import com.eirture.easy.base.utils.EditorUtil;
-import com.eirture.easy.base.utils.Views;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
 import com.eirture.easy.edit.EditP;
 import com.eirture.easy.edit.event.QueryJournalE;
 import com.eirture.easy.main.model.Journal;
 import com.eirture.easy.main.model.Notebook;
+import com.eirture.rxcommon.utils.Views;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.otto.Subscribe;
 
