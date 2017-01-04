@@ -3,7 +3,6 @@ package com.eirture.easy.main.adapter.holder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.widget.ClickableViewHolder;
@@ -42,7 +41,12 @@ public class JournalHolder extends ClickableViewHolder {
         this.journalId = journal.id;
         this.notebookId = journal.getNoteId();
 
-        tvDescription.setText(journal.getContentPreview());
+        tvDescription.setText(SpannableBuilder.createBuilder(tvDescription.getContext())
+                .createStyle().setSize(16).apply()
+                .append(journal.getTitle())
+                .createStyle().setSize(12).apply()
+                .append(journal.getContentPreview())
+                .build());
 
         Date date = journal.getDate();
         CharSequence dateStr = SpannableBuilder.createBuilder(tvDate.getContext())
@@ -52,7 +56,6 @@ public class JournalHolder extends ClickableViewHolder {
                 .append(String.valueOf(DateUtil.getDayOfMonth(date)))
                 .build();
         tvDate.setText(dateStr);
-
     }
 
     @Override

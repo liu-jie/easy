@@ -17,8 +17,6 @@ public class Journal {
 
     @DatabaseField(generatedId = true, canBeNull = false)
     public int id;
-    @DatabaseField
-    private String title;
     @DatabaseField(canBeNull = false)
     private Date date;
     @DatabaseField
@@ -37,14 +35,6 @@ public class Journal {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Date getDate() {
@@ -87,6 +77,9 @@ public class Journal {
     }
 
     public String getContentPreview() {
+        if ("".equals(mContentPreview)) {
+            refreshPreviewContent();
+        }
         return mContentPreview;
     }
 
@@ -103,9 +96,15 @@ public class Journal {
             }
         } else {
             mTitle = content;
-            mContentPreview = content;
+            mContentPreview = "";
         }
     }
+
+
+    public String getTitle() {
+        return mTitle;
+    }
+
 
     public static Journal newInstance(int noteId) {
         Journal j = new Journal();

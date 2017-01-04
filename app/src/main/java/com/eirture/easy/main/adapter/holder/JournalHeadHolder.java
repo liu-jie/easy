@@ -36,7 +36,7 @@ public class JournalHeadHolder extends RecyclerView.ViewHolder {
         labDays.setText(String.valueOf(notebook.getDays()));
         labPhotos.setText(String.valueOf(notebook.getPictures()));
         labWeek.setText(String.valueOf(notebook.getWeeklyCount()));
-        labToday.setText(String.valueOf(notebook.getTodays()));
+        labToday.setText(String.valueOf(notebook.getTodayCount()));
 
     }
 

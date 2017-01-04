@@ -34,6 +34,21 @@ public class DateUtil {
         return WEEK_DAYS[cal.get(Calendar.DAY_OF_WEEK) - 1];
     }
 
+    public static boolean sameDay(Date dateOne, Date dateTwo) {
+        if (dateOne == null || dateTwo == null)
+            return false;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateOne);
+
+        int thenYear = calendar.get(Calendar.YEAR);
+        int thenYearDay = calendar.get(Calendar.DAY_OF_YEAR);
+
+        calendar.setTime(dateTwo);
+        return (thenYear == calendar.get(Calendar.YEAR))
+                && (thenYearDay == calendar.get(Calendar.DAY_OF_YEAR));
+    }
+
     private DateUtil() {
     }
 

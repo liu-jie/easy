@@ -67,7 +67,7 @@ public class Notebook {
         return weeklyCount;
     }
 
-    public int getTodays() {
+    public int getTodayCount() {
         return todays;
     }
 
@@ -86,8 +86,9 @@ public class Notebook {
         Date lastDate = null;
         for (Journal journal :
                 journals) {
-            if (lastDate == null || !lastDate.equals(journal.getDate())) {
+            if (lastDate == null || !DateUtil.sameDay(lastDate, journal.getDate())) {
                 days++;
+                lastDate = journal.getDate();
             }
 
             if (DateUtil.isThisWeek(journal.getDate())) {
