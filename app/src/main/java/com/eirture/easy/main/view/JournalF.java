@@ -1,6 +1,8 @@
 package com.eirture.easy.main.view;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -34,10 +36,12 @@ public class JournalF extends MainFragment {
 
     @AfterViews
     void initViews() {
-
         if (mAdapter == null) {
             mAdapter = new JournalAdapter();
             rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+            DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
+            rvContent.addItemDecoration(decoration);
         }
         rvContent.setAdapter(mAdapter);
         refreshNotebookId();
@@ -64,7 +68,7 @@ public class JournalF extends MainFragment {
     }
 
     private void updateNotebook(Notebook notebook) {
-        System.out.println("updateNotebook: " + notebook.getCount());
+//        System.out.println("updateNotebook: " + notebook.getCount());
         mAdapter.updateNotebook(notebook);
     }
 

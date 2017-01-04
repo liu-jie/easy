@@ -117,7 +117,7 @@ public class JournalEditF extends AbstractEditFragment {
     }
 
     private void autoSave() {
-        editP.updateJournal(mJournal.setContent(getContent()));
+        editP.updateJournal(mJournal.refreshContent(getContent()));
     }
 
     @Click(R.id.op_bold)

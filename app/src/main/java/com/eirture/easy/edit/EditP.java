@@ -48,6 +48,6 @@ public class EditP {
     }
 
     public void deleteJournal(int journalId) {
-
+        
     }
 }

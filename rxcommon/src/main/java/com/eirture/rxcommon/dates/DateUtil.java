@@ -8,7 +8,6 @@ import static com.eirture.rxcommon.base.Preconditions.checkNotNull;
 public class DateUtil {
     private static final String[] WEEK_DAYS = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
-
     public static boolean isThisWeek(Date date) {
         Calendar c = Calendar.getInstance();
         System.out.println("day of week: " + c.get(Calendar.DAY_OF_WEEK));
@@ -28,7 +27,7 @@ public class DateUtil {
     public static int getDayOfMonth(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(checkNotNull(date, "date == null"));
-        return cal.get(Calendar.DAY_OF_MONTH) - 1;
+        return cal.get(Calendar.DAY_OF_MONTH);
     }
 
     private static String getChineseWeekName(Calendar cal) {

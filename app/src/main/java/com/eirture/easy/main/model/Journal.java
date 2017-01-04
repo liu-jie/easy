@@ -26,7 +26,7 @@ public class Journal {
     @DatabaseField(canBeNull = false)
     private int noteId; //笔记本
     @DatabaseField
-    private String content;
+    private String content = "";
 
     private String mTitle = "";
     private String mContentPreview = "";
@@ -76,7 +76,11 @@ public class Journal {
         return content;
     }
 
-    public Journal setContent(String content) {
+    public void setContent(String content) {
+        refreshContent(content);
+    }
+
+    public Journal refreshContent(String content) {
         this.content = content;
         refreshPreviewContent();
         return this;

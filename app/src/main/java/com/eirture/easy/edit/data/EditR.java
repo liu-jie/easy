@@ -12,6 +12,7 @@ import org.androidannotations.ormlite.annotations.OrmLiteDao;
 import java.sql.SQLException;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by eirture on 16-12-23.
@@ -31,15 +32,19 @@ public class EditR {
     }
 
     public Observable<Journal> queryJournal(int id) {
-//        return Observable.<Journal>create(subscriber -> {
-//            try {
-//                Journal journal = journalDao.queryForId(id);
-//                subscriber.onNext(journal);
-//            } catch (SQLException e) {
-//                subscriber.onError(e);
-//            }
-//        })
-//                .subscribeOn(Schedulers.io());
-        return null;
+        return Observable.<Journal>create(
+                subscriber -> {
+                    try {
+                        Journal journal = journalDao.queryForId(id);
+                        if (journal == null) {
+                            subscriber.onError(new Throwable("journal is not exist which id == " + id));
+                        } else {
+                            subscriber.onNext(journal);
+                        }
+                    } catch (SQLException e) {
+                        subscriber.onError(e);
+                    }
+                })
+                .subscribeOn(Schedulers.io());
     }
 }

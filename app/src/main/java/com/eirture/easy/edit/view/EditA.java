@@ -6,7 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.views.BaseActivity;
+import com.eirture.easy.base.bus.Result;
+import com.eirture.easy.base.views.BusActivity;
 import com.eirture.easy.edit.EditP;
 import com.eirture.easy.edit.event.QueryJournalE;
 import com.eirture.easy.main.model.Journal;
@@ -23,7 +24,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by eirture on 16-12-6.
  */
 @EActivity(R.layout.a_edit)
-public class EditA extends BaseActivity {
+public class EditA extends BusActivity {
 
     @Extra
     int journalId = -1;  // if create new journal extra journalId is empty;
@@ -61,15 +62,21 @@ public class EditA extends BaseActivity {
 
             // to do this when got journal data
             changeFragment(previewF);
+
         } else {
             // create new journal
             changeFragment(editF);
         }
     }
 
+
+    Result<Journal> result = Result.<Journal>create()
+            .successFunction(action -> refreshJournal(action))
+            .errorFunction(action -> System.err.println("journal is not exist! " + journalId));
+
     @Subscribe
     public void receiveQueryJournal(QueryJournalE e) {
-        
+        result.result(e);
     }
 
     private void initToolbar() {
@@ -88,6 +95,15 @@ public class EditA extends BaseActivity {
             }
             return true;
         });
+    }
+
+    private void refreshJournal(Journal journal) {
+        if (journal == null)
+            return;
+        System.out.println("journal content: " + journal.getContent());
+        this.journal = journal;
+        if (currentF != null)
+            currentF.setContent(journal.getContent());
     }
 
     private void changeFragment(AbstractEditFragment fragment) {
