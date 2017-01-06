@@ -42,6 +42,8 @@ public class JournalF extends MainFragment {
             DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
             rvContent.addItemDecoration(decoration);
+//            ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback());
+//            helper.attachToRecyclerView(rvContent);
         }
         rvContent.setAdapter(mAdapter);
         refreshNotebookId();

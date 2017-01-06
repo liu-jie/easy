@@ -45,6 +45,7 @@ public class JournalHolder extends ClickableViewHolder {
                 .createStyle().setSize(16).apply()
                 .append(journal.getTitle())
                 .createStyle().setSize(12).apply()
+                .append("\n")
                 .append(journal.getContentPreview())
                 .build());
 
