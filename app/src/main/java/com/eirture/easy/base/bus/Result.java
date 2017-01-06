@@ -31,7 +31,7 @@ public class Result<T> {
         return this;
     }
 
-    public Result<T> errorFunction(Action<Error> errorFunction) {
+    public Result<T> errorFunction(Action<BusMessage> errorFunction) {
         this.errorFunction = errorFunction;
         return this;
     }
@@ -52,7 +52,7 @@ public class Result<T> {
                 successFunction.action(dataEvent.data);
         } else {
             if (errorFunction != null)
-                errorFunction.action(dataEvent.error);
+                errorFunction.action(dataEvent.errorMessage);
         }
 
         if (finalityFunction != null)

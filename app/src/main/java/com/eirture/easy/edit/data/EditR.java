@@ -2,6 +2,7 @@ package com.eirture.easy.edit.data;
 
 import android.support.annotation.NonNull;
 
+import com.eirture.easy.base.bus.BusMessage;
 import com.eirture.easy.base.db.DatabaseHelper;
 import com.eirture.easy.main.model.Journal;
 import com.j256.ormlite.dao.Dao;
@@ -44,6 +45,23 @@ public class EditR {
                     } catch (SQLException e) {
                         subscriber.onError(e);
                     }
+                })
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<BusMessage> delete(int journalId) {
+        return Observable.<BusMessage>create(
+                subscriber -> {
+                    try {
+                        int code = journalDao.deleteById(journalId);
+                        if (1 == code)
+                            subscriber.onNext(new BusMessage(journalId, ""));
+                        else
+                            subscriber.onError(new Exception("delete journal filed"));
+                    } catch (SQLException e) {
+                        subscriber.onError(e);
+                    }
+                    subscriber.onCompleted();
                 })
                 .subscribeOn(Schedulers.io());
     }

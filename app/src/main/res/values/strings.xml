@@ -9,4 +9,8 @@
     <string name="ok">确定</string>
     <string name="link_name_cannot_empty">链接名称不能为空</string>
     <string name="edit">编辑</string>
+
+    <string-array name="journal_item_options">
+        <item>删除</item>
+    </string-array>
 </resources>

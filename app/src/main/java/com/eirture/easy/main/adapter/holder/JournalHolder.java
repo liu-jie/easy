@@ -17,11 +17,11 @@ import java.util.Date;
 /**
  * Created by eirture on 16-12-4.
  */
-
 public class JournalHolder extends ClickableViewHolder {
     public ImageView ivPictureOne, ivPictureTwo;
     public TextView tvPictureCount, tvDescription, tvExtraDescription, tvDate;
-    private int journalId, notebookId;
+    private int journalId, notebookId, position;
+
 
     public JournalHolder(View parent) {
         super(Views.inflate(parent, R.layout.i_journal));
@@ -35,7 +35,8 @@ public class JournalHolder extends ClickableViewHolder {
         tvDate = Views.find(itemView, R.id.tv_date);
     }
 
-    public void bindData(Journal journal) {
+    public void bindData(Journal journal, int position) {
+        this.position = position;
         if (journal == null)
             return;
         this.journalId = journal.id;
@@ -59,12 +60,18 @@ public class JournalHolder extends ClickableViewHolder {
         tvDate.setText(dateStr);
     }
 
+    public int position() {
+        return position;
+    }
+
+
     @Override
     public void onClick(View v) {
-//        Toast.makeText(v.getContext(), "click journal item", Toast.LENGTH_SHORT).show();
         EditA_.intent(v.getContext())
                 .journalId(journalId)
                 .notebookId(notebookId)
                 .start();
     }
+
+
 }

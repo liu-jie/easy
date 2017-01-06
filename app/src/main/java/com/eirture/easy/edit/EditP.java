@@ -3,6 +3,7 @@ package com.eirture.easy.edit;
 import com.eirture.easy.base.ObserverImpl;
 import com.eirture.easy.base.bus.SingleBus;
 import com.eirture.easy.edit.data.EditR;
+import com.eirture.easy.edit.event.DeleteJournalE;
 import com.eirture.easy.edit.event.QueryJournalE;
 import com.eirture.easy.main.model.Journal;
 
@@ -48,6 +49,8 @@ public class EditP {
     }
 
     public void deleteJournal(int journalId) {
-        
+        editR.delete(journalId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverImpl<>(bus, DeleteJournalE.class));
     }
 }

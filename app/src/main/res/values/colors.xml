@@ -17,7 +17,7 @@
     <color name="textBlack">@color/black</color>
 
 
-    <color name="transparentGray">#88eeeeee</color>
+    <color name="transparentGray">#88cccccc</color>
     <color name="transparentWhite">#bbffffff</color>
     <color name="transparent">@android:color/transparent</color>
 

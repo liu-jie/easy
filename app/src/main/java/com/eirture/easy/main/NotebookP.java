@@ -2,6 +2,7 @@ package com.eirture.easy.main;
 
 import com.eirture.easy.base.ObserverImpl;
 import com.eirture.easy.base.bus.SingleBus;
+import com.eirture.easy.edit.EditP;
 import com.eirture.easy.main.data.NotebookR;
 import com.eirture.easy.main.event.GetNotebookE;
 import com.eirture.easy.main.event.LoadAllNotebookE;
@@ -21,6 +22,8 @@ public class NotebookP {
     @Bean
     NotebookR notebookR;
     @Bean
+    EditP editP;
+    @Bean
     SingleBus bus;
 
     public void getJournals(int id) {
@@ -39,6 +42,10 @@ public class NotebookP {
         notebookR.getNotebook(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ObserverImpl<>(bus, GetNotebookE.class));
+    }
+
+    public void deleteJournal(int journalId) {
+        editP.deleteJournal(journalId);
     }
 
 }

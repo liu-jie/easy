@@ -6,7 +6,7 @@ package com.eirture.easy.base.bus;
 
 public abstract class DataEvent<T> extends Event {
     public T data;
-    public Error error;
+    public BusMessage errorMessage;
     private boolean isPrelude;
 
     public boolean isPrelude() {
@@ -20,10 +20,10 @@ public abstract class DataEvent<T> extends Event {
         return (E) this;
     }
 
-    public <E extends DataEvent> E error(Error error) {
+    public <E extends DataEvent> E error(BusMessage errorMessage) {
         isPrelude = false;
         successful = false;
-        this.error = error;
+        this.errorMessage = errorMessage;
         return (E) this;
     }
 

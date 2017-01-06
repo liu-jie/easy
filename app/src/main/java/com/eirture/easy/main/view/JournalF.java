@@ -5,10 +5,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.bus.Result;
+import com.eirture.easy.base.widget.helper.SimpleItemTouchCallback;
 import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
 import com.eirture.easy.main.event.GetNotebookE;
@@ -42,8 +44,8 @@ public class JournalF extends MainFragment {
             DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
             rvContent.addItemDecoration(decoration);
-//            ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback());
-//            helper.attachToRecyclerView(rvContent);
+            ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback(mAdapter));
+            helper.attachToRecyclerView(rvContent);
         }
         rvContent.setAdapter(mAdapter);
         refreshNotebookId();

@@ -2,8 +2,8 @@ package com.eirture.easy.base;
 
 import android.support.annotation.NonNull;
 
+import com.eirture.easy.base.bus.BusMessage;
 import com.eirture.easy.base.bus.DataEvent;
-import com.eirture.easy.base.bus.Error;
 import com.eirture.easy.base.bus.SingleBus;
 
 import rx.Observer;
@@ -58,7 +58,7 @@ public class ObserverImpl<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        bus.post(event.error(new Error(errorCode, e.getMessage())));
+        bus.post(event.error(new BusMessage(errorCode, e.getMessage())));
     }
 
     @Override
