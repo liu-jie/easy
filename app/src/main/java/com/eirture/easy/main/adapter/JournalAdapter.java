@@ -52,12 +52,7 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public JournalHolder onCreateHolder(ViewGroup parent, int viewType) {
-        JournalHolder holder = new JournalHolder(parent);
-        holder.itemView.setOnLongClickListener(v -> {
-            removePosition(holder.position());
-            return true;
-        });
-        return holder;
+        return new JournalHolder(parent);
     }
 
     @Override
