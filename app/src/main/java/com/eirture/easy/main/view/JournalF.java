@@ -1,7 +1,7 @@
 package com.eirture.easy.main.view;
 
-import android.app.Activity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,13 +29,15 @@ import org.androidannotations.annotations.ViewById;
 @EFragment(R.layout.c_recycler_view)
 public class JournalF extends MainFragment {
 
+    @ViewById(R.id.swipe)
+    SwipeRefreshLayout refreshLayout;
+
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;
     JournalAdapter mAdapter;
     @Bean
     NotebookP notebookP;
 
-    private int notebookId = -1;
     private AlertDialog itemOptionDialog;
 
     @AfterViews
@@ -58,11 +60,14 @@ public class JournalF extends MainFragment {
             DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
             rvContent.addItemDecoration(decoration);
+
+            refreshLayout.setOnRefreshListener(() -> {
+                refreshNotebook();
+            });
         }
         rvContent.setAdapter(mAdapter);
-        refreshNotebookId();
+        refreshNotebook();
     }
-
 
     private Result<BusMessage> deleteJournalResult = Result.<BusMessage>create()
             .successFunction(action -> mAdapter.removePosition(action.code))
@@ -73,20 +78,17 @@ public class JournalF extends MainFragment {
         deleteJournalResult.result(e);
     }
 
-    private void refreshNotebookId() {
-        Activity activity = getActivity();
-        if (activity instanceof MainA) {
-            int nbId = ((MainA) activity).getNotebookId();
-            if (nbId != notebookId) {
-                // notebook is changed. must refresh data;
-                notebookP.getNotebookById(notebookId = nbId);
-            }
-        }
+    @Override
+    protected void refreshNotebook() {
+        notebookP.getNotebookById(notebookId);
     }
 
     private Result<Notebook> getNotebookResult = Result.<Notebook>create()
             .successFunction(action -> updateNotebook(action))
-            .errorFunction(action -> Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show());
+            .errorFunction(action -> Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show())
+            .finality(() -> {
+                if (refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
+            });
 
     @Subscribe
     public void loadNotebookEvent(GetNotebookE e) {

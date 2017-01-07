@@ -72,12 +72,9 @@ public class MainA extends BaseActivity {
             return;
 
         currentF = fragments.get(0);
+        currentF.updateNotebookId(notebookId);
         fm.beginTransaction()
                 .replace(R.id.container, currentF)
                 .commit();
-    }
-
-    public int getNotebookId() {
-        return notebookId;
     }
 }

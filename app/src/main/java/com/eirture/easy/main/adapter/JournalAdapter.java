@@ -27,6 +27,8 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
         journals = notebook.journals();
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -36,7 +38,6 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public void onBindHolder(JournalHolder holder, int position) {
-        System.out.println("bind holder: " + position);
         holder.bindData(journals.get(position), position);
     }
 
@@ -46,7 +47,6 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
                 EditA_.intent(headHolder.btnAdd.getContext()).start());
         headHolder.btnPhoto.setOnClickListener(v ->
                 Toast.makeText(headHolder.btnPhoto.getContext(), "new photo journal", Toast.LENGTH_SHORT).show());
-
         headHolder.bindData(notebook);
     }
 
@@ -56,8 +56,6 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
         holder.itemView.setOnLongClickListener(v -> {
             if (onItemLongClickListener == null)
                 return false;
-//            removePosition(holder.position());
-//            return true;
             return onItemLongClickListener.onLongClick(holder.position());
         });
         return holder;
@@ -78,7 +76,6 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
         notebook.journals().remove(position);
         notifyItemRemoved(position + 1);
         notifyItemRangeChanged(position + 1, getItemCount());
-
     }
 
     public void addOnItemLongClickListener(OnItemLongClickListener<Integer> listener) {
