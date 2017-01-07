@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
  */
 @EActivity(R.layout.a_edit)
 public class EditA extends BusActivity implements AutoSave {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日");
     @Extra
     int journalId = -1;  // if create new journal extra journalId is empty;
     @Extra
