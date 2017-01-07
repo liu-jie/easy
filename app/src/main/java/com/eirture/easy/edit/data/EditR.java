@@ -55,7 +55,7 @@ public class EditR {
                     try {
                         int code = journalDao.deleteById(journalId);
                         if (1 == code)
-                            subscriber.onNext(new BusMessage(journalId, ""));
+                            subscriber.onNext(new BusMessage(0, ""));
                         else
                             subscriber.onError(new Exception("delete journal filed"));
                     } catch (SQLException e) {

@@ -44,8 +44,8 @@ public class NotebookP {
                 .subscribe(new ObserverImpl<>(bus, GetNotebookE.class));
     }
 
-    public void deleteJournal(int journalId) {
-        editP.deleteJournal(journalId);
+    public void deleteJournal(int journalId, int position) {
+        editP.deleteJournal(journalId, position);
     }
 
 }

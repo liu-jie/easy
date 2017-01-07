@@ -48,8 +48,9 @@ public class EditP {
                 .subscribe(new ObserverImpl<>(bus, QueryJournalE.class));
     }
 
-    public void deleteJournal(int journalId) {
+    public void deleteJournal(int journalId, int position) {
         editR.delete(journalId)
+                .doOnNext(busMessage -> busMessage.code = position)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ObserverImpl<>(bus, DeleteJournalE.class));
     }

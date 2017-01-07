@@ -1,12 +1,10 @@
 package com.eirture.easy.main.adapter;
 
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.eirture.easy.base.widget.HeadSuperRecyclerAdapter;
-import com.eirture.easy.base.widget.helper.SwipeAdapterCallback;
+import com.eirture.easy.base.widget.OnItemLongClickListener;
 import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.adapter.holder.JournalHeadHolder;
 import com.eirture.easy.main.adapter.holder.JournalHolder;
@@ -20,9 +18,11 @@ import java.util.List;
  * Created by eirture on 16-12-4.
  */
 
-public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, JournalHeadHolder> implements SwipeAdapterCallback {
+public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, JournalHeadHolder> {
     private Notebook notebook;
     private List<Journal> journals = new ArrayList<>();
+
+    private OnItemLongClickListener<Integer> onItemLongClickListener;
 
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
@@ -52,7 +52,15 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public JournalHolder onCreateHolder(ViewGroup parent, int viewType) {
-        return new JournalHolder(parent);
+        JournalHolder holder = new JournalHolder(parent);
+        holder.itemView.setOnLongClickListener(v -> {
+            if (onItemLongClickListener == null)
+                return false;
+//            removePosition(holder.position());
+//            return true;
+            return onItemLongClickListener.onLongClick(holder.position());
+        });
+        return holder;
     }
 
     @Override
@@ -67,19 +75,13 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     }
 
     public void removePosition(int position) {
-        if (position > 1) {
-            notebook.journals().remove(position - 1);
-        }
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getItemCount());
+        notebook.journals().remove(position);
+        notifyItemRemoved(position + 1);
+        notifyItemRangeChanged(position + 1, getItemCount());
+
     }
 
-    @Override
-    public void swiped(RecyclerView.ViewHolder holder, int direction) {
-        new AlertDialog.Builder(holder.itemView.getContext())
-                .setMessage("确认删除？")
-                .setPositiveButton("删除", (dialog, which) -> removePosition(holder.getAdapterPosition()))
-                .setNegativeButton("取消", (dialog, which) -> notifyItemChanged(holder.getAdapterPosition()))
-                .show();
+    public void addOnItemLongClickListener(OnItemLongClickListener<Integer> listener) {
+        this.onItemLongClickListener = listener;
     }
 }
