@@ -102,6 +102,9 @@ public class Journal {
 
 
     public String getTitle() {
+        if ("".equals(mTitle)) {
+            refreshPreviewContent();
+        }
         return mTitle;
     }
 
