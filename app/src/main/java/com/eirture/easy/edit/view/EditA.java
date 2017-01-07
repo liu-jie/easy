@@ -21,12 +21,14 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by eirture on 16-12-6.
  */
 @EActivity(R.layout.a_edit)
 public class EditA extends BusActivity implements AutoSave {
-
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     @Extra
     int journalId = -1;  // if create new journal extra journalId is empty;
     @Extra
@@ -82,9 +84,6 @@ public class EditA extends BusActivity implements AutoSave {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        toolbar.getMenu().getItem(0)
-//                .setTitle(currentF == previewF ? R.string.edit : R.string.finish);
-
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -102,8 +101,9 @@ public class EditA extends BusActivity implements AutoSave {
         if ((this.journal = journal) == null) {
             return;
         }
-        System.out.println("---------- journal content: " + journal.getContent());
+
         this.journal = journal;
+        toolbar.setTitle(DATE_FORMAT.format(journal.getDate()));
         editContent = journal.getContent();
         changeFragment(previewF);
     }
