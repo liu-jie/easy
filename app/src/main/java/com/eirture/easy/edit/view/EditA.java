@@ -11,6 +11,7 @@ import com.eirture.easy.base.views.BusActivity;
 import com.eirture.easy.edit.EditP;
 import com.eirture.easy.edit.event.QueryJournalE;
 import com.eirture.easy.main.model.Journal;
+import com.eirture.easy.main.model.Notebook;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
@@ -24,12 +25,12 @@ import org.androidannotations.annotations.ViewById;
  * Created by eirture on 16-12-6.
  */
 @EActivity(R.layout.a_edit)
-public class EditA extends BusActivity {
+public class EditA extends BusActivity implements AutoSave {
 
     @Extra
     int journalId = -1;  // if create new journal extra journalId is empty;
     @Extra
-    int notebookId = 0;
+    int notebookId = Notebook.DEFAULT_NOTEBOOK_ID;
 
     @ViewById
     Toolbar toolbar;
@@ -39,7 +40,8 @@ public class EditA extends BusActivity {
     private JournalEditF editF;
     private FragmentManager fm;
 
-    private String editContent;
+    private boolean updated = false;
+    private String editContent = "";
     private Journal journal;
 
     @Bean
@@ -48,7 +50,9 @@ public class EditA extends BusActivity {
     @AfterInject
     void init() {
         previewF = JournalPreviewF_.builder().build();
-        editF = JournalEditF_.builder().build();
+        editF = JournalEditF_.builder().journalId(journalId).noteId(notebookId).build();
+        editF.setAutoSave(this);
+
         fm = getSupportFragmentManager();
     }
 
@@ -56,19 +60,14 @@ public class EditA extends BusActivity {
     void initViews() {
         setSupportActionBar(toolbar);
         initToolbar();
+
         if (journalId != -1) {
-            // read an existent journal
             editP.readJournal(journalId);
-
-            // to do this when got journal data
-            changeFragment(previewF);
-
         } else {
-            // create new journal
+            journal = Journal.newInstance(notebookId);
             changeFragment(editF);
         }
     }
-
 
     Result<Journal> result = Result.<Journal>create()
             .successFunction(action -> refreshJournal(action))
@@ -83,14 +82,16 @@ public class EditA extends BusActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+//        toolbar.getMenu().getItem(0)
+//                .setTitle(currentF == previewF ? R.string.edit : R.string.finish);
+
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_btn:
-                    if (currentF == editF) {
-                        editContent = editF.getContent();
-                    }
-                    changeFragment(currentF == editF ? previewF : editF);
+                    boolean isPreview = currentF == previewF;
+                    item.setTitle(isPreview ? R.string.preview : R.string.edit);
+                    changeFragment(isPreview ? editF : previewF);
                     break;
             }
             return true;
@@ -98,23 +99,22 @@ public class EditA extends BusActivity {
     }
 
     private void refreshJournal(Journal journal) {
-        if (journal == null)
+        if ((this.journal = journal) == null) {
             return;
-        System.out.println("journal content: " + journal.getContent());
+        }
+        System.out.println("---------- journal content: " + journal.getContent());
         this.journal = journal;
-        if (currentF != null)
-            currentF.setContent(journal.getContent());
+        editContent = journal.getContent();
+        changeFragment(previewF);
     }
 
     private void changeFragment(AbstractEditFragment fragment) {
         if (currentF == fragment)
             return;
-        Menu menu;
-        if ((menu = toolbar.getMenu()).size() > 0) {
-            menu.getItem(0).setTitle(fragment == previewF ? R.string.edit : R.string.finish);
+        if (currentF == editF) {
+            editContent = editF.getContent();
         }
         fragment.setContent(editContent);
-
         fm.beginTransaction()
                 .replace(R.id.fl_container, currentF = fragment)
                 .commit();
@@ -123,7 +123,21 @@ public class EditA extends BusActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.editor, menu);
+        menu.getItem(0).setTitle(currentF == previewF ? R.string.edit : R.string.preview);
         return true;
     }
 
+    @Override
+    public void save(String content) {
+        editP.updateJournal(journal.refreshContent(content));
+        updated = true;
+    }
+
+    @Override
+    public void finish() {
+        if (updated) {
+            setResult(RESULT_OK);
+        }
+        super.finish();
+    }
 }

@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.eirture.easy.base.widget.HeadSuperRecyclerAdapter;
+import com.eirture.easy.base.widget.OnItemClickListener;
 import com.eirture.easy.base.widget.OnItemLongClickListener;
 import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.adapter.holder.JournalHeadHolder;
@@ -23,6 +24,8 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     private List<Journal> journals = new ArrayList<>();
 
     private OnItemLongClickListener<Integer> onItemLongClickListener;
+    private OnItemClickListener<Integer> onItemClickListener;
+
 
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
@@ -58,6 +61,12 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
                 return false;
             return onItemLongClickListener.onLongClick(holder.position());
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener == null)
+                return;
+            onItemClickListener.onItemClick(holder.journalId());
+        });
         return holder;
     }
 
@@ -80,5 +89,9 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     public void addOnItemLongClickListener(OnItemLongClickListener<Integer> listener) {
         this.onItemLongClickListener = listener;
+    }
+
+    public void addOnItemClickListener(OnItemClickListener<Integer> listener) {
+        this.onItemClickListener = listener;
     }
 }

@@ -1,12 +1,12 @@
 package com.eirture.easy.main.adapter.holder;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.widget.ClickableViewHolder;
-import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.model.Journal;
 import com.eirture.rxcommon.dates.DateUtil;
 import com.eirture.rxcommon.texts.SpannableBuilder;
@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Created by eirture on 16-12-4.
  */
-public class JournalHolder extends ClickableViewHolder {
+public class JournalHolder extends RecyclerView.ViewHolder {
     public ImageView ivPictureOne, ivPictureTwo;
     public TextView tvPictureCount, tvDescription, tvExtraDescription, tvDate;
     private int journalId, notebookId, position;
@@ -64,14 +64,11 @@ public class JournalHolder extends ClickableViewHolder {
         return position;
     }
 
-
-    @Override
-    public void onClick(View v) {
-        EditA_.intent(v.getContext())
-                .journalId(journalId)
-                .notebookId(notebookId)
-                .start();
+    public int journalId() {
+        return journalId;
     }
 
-
+    public int notebookId() {
+        return notebookId;
+    }
 }

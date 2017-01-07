@@ -1,5 +1,6 @@
 package com.eirture.easy.main.view;
 
+import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import com.eirture.easy.R;
 import com.eirture.easy.base.bus.BusMessage;
 import com.eirture.easy.base.bus.Result;
 import com.eirture.easy.edit.event.DeleteJournalE;
+import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
 import com.eirture.easy.main.event.GetNotebookE;
@@ -21,6 +23,7 @@ import com.squareup.otto.Subscribe;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -28,6 +31,7 @@ import org.androidannotations.annotations.ViewById;
  */
 @EFragment(R.layout.c_recycler_view)
 public class JournalF extends MainFragment {
+    private static final int REQUEST_EDIT_CODE = 1;
 
     @ViewById(R.id.swipe)
     SwipeRefreshLayout refreshLayout;
@@ -56,14 +60,14 @@ public class JournalF extends MainFragment {
                 itemOptionDialog.show();
                 return true;
             });
+            mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebookId).journalId(data).startForResult(REQUEST_EDIT_CODE));
+
             rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
             DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
             rvContent.addItemDecoration(decoration);
 
-            refreshLayout.setOnRefreshListener(() -> {
-                refreshNotebook();
-            });
+            refreshLayout.setOnRefreshListener(() -> refreshNotebook());
         }
         rvContent.setAdapter(mAdapter);
         refreshNotebook();
@@ -96,9 +100,15 @@ public class JournalF extends MainFragment {
     }
 
     private void updateNotebook(Notebook notebook) {
-//        System.out.println("updateNotebook: " + notebook.getCount());
         mAdapter.updateNotebook(notebook);
     }
 
+    @OnActivityResult(REQUEST_EDIT_CODE)
+    protected void editResult(int resultCode) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+
+        refreshNotebook();
+    }
 
 }

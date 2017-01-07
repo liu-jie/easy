@@ -12,24 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.bus.Result;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
-import com.eirture.easy.edit.EditP;
-import com.eirture.easy.edit.event.QueryJournalE;
-import com.eirture.easy.main.model.Journal;
 import com.eirture.easy.main.model.Notebook;
 import com.eirture.rxcommon.utils.Views;
 import com.jakewharton.rxbinding.widget.RxTextView;
-import com.squareup.otto.Subscribe;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by eirture on 16-12-6.
@@ -50,24 +45,13 @@ public class JournalEditF extends AbstractEditFragment {
     @ViewById(R.id.hsv_edit_options)
     HorizontalScrollViewPro hsvEditOptionBar;
 
-    private String contentStr;
-    private Journal mJournal;
-
-    @Bean
-    EditP editP;
-
-    @AfterInject
-    protected void init() {
-        if (journalId == -1) {
-            mJournal = Journal.newInstance(noteId);
-        } else {
-            editP.readJournal(journalId);
-        }
-    }
+    private String contentStr = "";
+    private AutoSave autoSave;
 
     @AfterViews
     protected void initViews() {
-        etContent.setText(contentStr);
+        refresh();
+
         hsvEditOptionBar.addOnScrollChangedListener((l, t, oldl, oldt) -> {
             View child = hsvEditOptionBar.getChildAt(hsvEditOptionBar.getChildCount() - 1);
             int diff = child.getRight() - (hsvEditOptionBar.getWidth() + l);
@@ -83,9 +67,15 @@ public class JournalEditF extends AbstractEditFragment {
         RxTextView.afterTextChangeEvents(etContent)
                 .doOnNext(textViewAfterTextChangeEvent -> {
                     setTitleSpan(textViewAfterTextChangeEvent.editable());
-                    autoSave();
+                    if (autoSave != null)
+                        autoSave.save(textViewAfterTextChangeEvent.editable().toString());
                 })
                 .subscribe();
+
+    }
+
+    public void setAutoSave(AutoSave autoSave) {
+        this.autoSave = checkNotNull(autoSave);
     }
 
     private void rotationEditArrowButton(boolean scrollbar) {
@@ -100,24 +90,9 @@ public class JournalEditF extends AbstractEditFragment {
     }
 
     private void refresh() {
-        if (!isVisible() || mJournal == null)
+        if (!isVisible())
             return;
-        etContent.setText(mJournal.getContent());
-    }
-
-    @Subscribe
-    public void loadJournalEvent(QueryJournalE e) {
-        Result.<Journal>create()
-                .successFunction(action -> {
-                    mJournal = action;
-                    refresh();
-                })
-                .errorFunction(action -> System.out.println(action))
-                .result(e);
-    }
-
-    private void autoSave() {
-        editP.updateJournal(mJournal.refreshContent(getContent()));
+        etContent.setText(contentStr);
     }
 
     @Click(R.id.op_bold)
@@ -220,9 +195,8 @@ public class JournalEditF extends AbstractEditFragment {
 
     @Override
     public void setContent(@NonNull String contentStr) {
-        if (contentStr == null)
+        if (contentStr == null || this.contentStr.equals(contentStr))
             return;
-
         this.contentStr = contentStr;
     }
 }

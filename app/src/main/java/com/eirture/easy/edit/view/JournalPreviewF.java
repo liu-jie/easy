@@ -11,6 +11,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by eirture on 16-12-6.
  */
@@ -30,21 +32,19 @@ public class JournalPreviewF extends AbstractEditFragment {
 
     @AfterViews
     void initViews() {
-        if (!"".equals(contentStr))
-            refresh();
+        refresh();
     }
 
-
     private void refresh() {
-        if (contentStr == null)
-            return;
+        System.out.println("===========refresh:" + contentStr);
         String content = mCss + new AndDown().markdownToHtml(contentStr);
         wvMarkdown.loadDataWithBaseURL("file:///android_asset/", content, "text/html", "utf-8", null);
     }
 
     @Override
     public void setContent(@NonNull String contentStr) {
-        this.contentStr = contentStr;
+        this.contentStr = checkNotNull(contentStr).replaceFirst("\n", "\n---\n");
+        System.out.println("journal preview Fragment: " + contentStr);
         if (isVisible())
             refresh();
     }
