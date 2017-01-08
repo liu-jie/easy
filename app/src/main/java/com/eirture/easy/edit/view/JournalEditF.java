@@ -1,5 +1,8 @@
 package com.eirture.easy.edit.view;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -22,6 +25,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,6 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @EFragment(R.layout.f_journal_edit)
 public class JournalEditF extends AbstractEditFragment {
+    private static final int REQUEST_SELECT_PHOTO = 1;
 
     @FragmentArg
     int journalId = -1;
@@ -72,6 +77,8 @@ public class JournalEditF extends AbstractEditFragment {
                 })
                 .subscribe();
 
+        etContent.requestFocus();
+
     }
 
     public void setAutoSave(AutoSave autoSave) {
@@ -93,6 +100,14 @@ public class JournalEditF extends AbstractEditFragment {
         if (!isVisible())
             return;
         etContent.setText(contentStr);
+    }
+
+    @Click(R.id.op_photo)
+    void clickPhoto() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_SELECT_PHOTO);
     }
 
     @Click(R.id.op_bold)
@@ -124,6 +139,16 @@ public class JournalEditF extends AbstractEditFragment {
     void clickLink() {
         initLinkDialog();
         addLinkDialog.show();
+    }
+
+    @OnActivityResult(REQUEST_SELECT_PHOTO)
+    protected void selectPhotoResult(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+
+        Uri uri = data.getData();
+        EditorUtil.insert2EditText(etContent, String.format("![%s](%s)", "", uri.getPath()));
+
     }
 
 
