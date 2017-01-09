@@ -2,7 +2,9 @@ package com.eirture.easy.edit.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -107,7 +109,9 @@ public class JournalEditF extends AbstractEditFragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, REQUEST_SELECT_PHOTO);
+//        startActivityForResult(intent, );
+
+        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
     }
 
     @Click(R.id.op_bold)
@@ -147,10 +151,21 @@ public class JournalEditF extends AbstractEditFragment {
             return;
 
         Uri uri = data.getData();
-        EditorUtil.insert2EditText(etContent, String.format("![%s](%s)", "", uri.getPath()));
-
+        EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
     }
 
+    private String getImageMarkdownString(Uri contentURI) {
+        String result = "";
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor != null) { // Source is Dropbox or other similar local file path
+            cursor.moveToFirst();
+            int idx_path = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            int idx_name = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME);
+            result = String.format("\n![%s](%s)", cursor.getString(idx_name), cursor.getString(idx_path));
+            cursor.close();
+        }
+        return result;
+    }
 
     AlertDialog addLinkDialog;
     TextView etLinkTitle, etLinkAddress;
