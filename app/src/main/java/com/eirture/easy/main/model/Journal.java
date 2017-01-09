@@ -85,7 +85,7 @@ public class Journal {
 
     private void refreshPreviewContent() {
         int firstNewLinePosition = content.indexOf(NEW_LINE);
-        if (firstNewLinePosition > -1 && firstNewLinePosition < 200) {
+        if (firstNewLinePosition > -1 && firstNewLinePosition < 100) {
             mTitle = content.substring(0, firstNewLinePosition).trim();
 
             if (firstNewLinePosition < content.length()) {

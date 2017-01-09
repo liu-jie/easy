@@ -89,7 +89,10 @@ public class JournalF extends MainFragment {
 
     private Result<Notebook> getNotebookResult = Result.<Notebook>create()
             .successFunction(action -> updateNotebook(action))
-            .errorFunction(action -> Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show())
+            .errorFunction(action -> {
+                Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show();
+                System.err.println(action.message);
+            })
             .finality(() -> {
                 if (refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
             });

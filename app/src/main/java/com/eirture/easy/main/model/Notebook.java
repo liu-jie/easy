@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import com.eirture.rxcommon.dates.DateUtil;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +99,13 @@ public class Notebook {
 
             if (DateUtils.isToday(journal.getDate().getTime())) {
                 todays++;
+            }
+
+            String pStr = journal.getPictures();
+            if (!Strings.isNullOrEmpty(pStr)) {
+                int pCount = CharMatcher.is(',')
+                        .countIn(pStr);
+                pictures += pCount + 1;
             }
         }
     }

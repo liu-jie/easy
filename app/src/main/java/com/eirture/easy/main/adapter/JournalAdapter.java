@@ -30,7 +30,7 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
         journals = notebook.journals();
-
+        System.out.println("update notebook list ");
         notifyDataSetChanged();
     }
 
