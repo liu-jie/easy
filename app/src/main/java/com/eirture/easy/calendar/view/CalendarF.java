@@ -1,10 +1,10 @@
 package com.eirture.easy.calendar.view;
 
-import android.support.v4.view.ViewPager;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.eirture.easy.R;
-import com.eirture.easy.calendar.adapter.CalendarPageAdapter;
+import com.eirture.easy.calendar.adapter.CalendarAdapter;
 import com.eirture.easy.main.view.MainFragment;
 
 import org.androidannotations.annotations.AfterViews;
@@ -22,19 +22,20 @@ public class CalendarF extends MainFragment {
     TextView tvDayCount;
     @ViewById(R.id.tv_title_date)
     TextView tvTitleDate;
-    @ViewById(R.id.vp_calendar)
-    ViewPager vpCalendar;
+    @ViewById(R.id.gv_calendar)
+    GridView gvCalendar;
 
-    private CalendarPageAdapter mAdapter;
+    CalendarAdapter mAdapter;
 
     @AfterViews
     protected void initViews() {
         if (mAdapter == null) {
-
+            mAdapter = new CalendarAdapter();
         }
-
-        vpCalendar.setAdapter(mAdapter);
+        gvCalendar.setAdapter(mAdapter);
+        tvTitleDate.setText(mAdapter.getTitleStr());
     }
+
 
     @Click(R.id.btn_last)
     protected void clickLastMonth() {
@@ -48,6 +49,6 @@ public class CalendarF extends MainFragment {
 
     @Override
     protected void refreshNotebook() {
-        
+
     }
 }

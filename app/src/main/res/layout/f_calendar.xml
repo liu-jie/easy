@@ -58,9 +58,10 @@
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_calendar"
+    <GridView
+        android:id="@+id/gv_calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:numColumns="7" />
 
 </LinearLayout>
