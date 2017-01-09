@@ -6,13 +6,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eirture.easy.R;
-import com.eirture.easy.base.widget.ClickableViewHolder;
+import com.eirture.easy.base.utils.glide.GlideHelper;
 import com.eirture.easy.main.model.Journal;
 import com.eirture.rxcommon.dates.DateUtil;
 import com.eirture.rxcommon.texts.SpannableBuilder;
 import com.eirture.rxcommon.utils.Views;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by eirture on 16-12-4.
@@ -58,6 +62,35 @@ public class JournalHolder extends RecyclerView.ViewHolder {
                 .append(String.valueOf(DateUtil.getDayOfMonth(date)))
                 .build();
         tvDate.setText(dateStr);
+        updatePicture(journal.getPictures());
+    }
+
+    private void updatePicture(String picturesStr) {
+        tvPictureCount.setVisibility(View.GONE);
+        ivPictureOne.setVisibility(View.GONE);
+        ivPictureTwo.setVisibility(View.GONE);
+
+        if (Strings.isNullOrEmpty(picturesStr)) {
+            return;
+        }
+
+        List<String> pictures = Lists.newArrayList(Splitter.on(",")
+                .split(picturesStr));
+        int count = pictures.size();
+        if (count > 0) {
+            ivPictureOne.setVisibility(View.VISIBLE);
+            GlideHelper.loadPicture(pictures.get(0), ivPictureOne);
+        }
+
+        if (count > 1) {
+            ivPictureTwo.setVisibility(View.VISIBLE);
+            GlideHelper.loadPicture(pictures.get(1), ivPictureTwo);
+        }
+
+        if (count > 2) {
+            tvPictureCount.setVisibility(View.VISIBLE);
+            tvPictureCount.setText("+" + (count - 2));
+        }
     }
 
     public int position() {
