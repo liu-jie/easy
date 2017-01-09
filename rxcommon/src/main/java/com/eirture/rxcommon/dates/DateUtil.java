@@ -10,7 +10,7 @@ public class DateUtil {
 
     public static boolean isThisWeek(Date date) {
         Calendar c = Calendar.getInstance();
-        System.out.println("day of week: " + c.get(Calendar.DAY_OF_WEEK));
+//        System.out.println("day of week: " + c.get(Calendar.DAY_OF_WEEK));
         c.add(Calendar.DATE, c.get(Calendar.DAY_OF_WEEK) - 1);
         return c.getTime().before(date);
     }

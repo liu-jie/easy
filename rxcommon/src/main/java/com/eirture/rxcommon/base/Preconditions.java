@@ -18,6 +18,14 @@ public final class Preconditions {
         return value;
     }
 
+    public static <T> T checkNotNull(T value) {
+        if (value == null) {
+            throw new NullPointerException();
+        }
+
+        return value;
+    }
+
     private Preconditions() {
         throw new AssertionError("No instances.");
     }

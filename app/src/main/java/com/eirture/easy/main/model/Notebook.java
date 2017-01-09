@@ -83,7 +83,7 @@ public class Notebook {
 
     public void calculateData() {
         count = journals.size();
-        Collections.sort(journals, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        Collections.sort(journals, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
         Date lastDate = null;
         for (Journal journal :

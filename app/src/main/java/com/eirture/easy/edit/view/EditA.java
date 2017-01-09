@@ -1,5 +1,6 @@
 package com.eirture.easy.edit.view;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,9 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.eirture.rxcommon.base.Preconditions.checkNotNull;
 
 /**
  * Created by eirture on 16-12-6.
@@ -29,8 +33,9 @@ import java.text.SimpleDateFormat;
 @EActivity(R.layout.a_edit)
 public class EditA extends BusActivity implements AutoSave {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日");
+
     @Extra
-    int journalId = -1;  // if create new journal extra journalId is empty;
+    int journalId = -1;  // if journalId == -1 that create new journal, and if journalId == -2, start as select photo mode;
     @Extra
     int notebookId = Notebook.DEFAULT_NOTEBOOK_ID;
 
@@ -63,11 +68,14 @@ public class EditA extends BusActivity implements AutoSave {
         setSupportActionBar(toolbar);
         initToolbar();
 
-        if (journalId != -1) {
+        if (journalId >= 0) {
             editP.readJournal(journalId);
         } else {
             journal = Journal.newInstance(notebookId);
             changeFragment(editF);
+            if (journalId == -2) {
+                editF.startAsSelectPhoto();
+            }
         }
     }
 
@@ -84,6 +92,7 @@ public class EditA extends BusActivity implements AutoSave {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        toolbar.setTitle(DATE_FORMAT.format(new Date()));
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -129,7 +138,10 @@ public class EditA extends BusActivity implements AutoSave {
     }
 
     @Override
-    public void save(String content) {
+    public void save(@NonNull String content) {
+        if (checkNotNull(content).equals(journal.getContent()))
+            return;
+
         editP.updateJournal(journal.refreshContent(content));
         updated = true;
     }

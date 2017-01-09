@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.eirture.easy.base.bus.BusMessage;
 import com.eirture.easy.base.db.DatabaseHelper;
 import com.eirture.easy.main.model.Journal;
+import com.google.common.base.Strings;
 import com.j256.ormlite.dao.Dao;
 
 import org.androidannotations.annotations.EBean;
@@ -30,6 +31,10 @@ public class EditR {
 
     public void saveJournal(@NonNull Journal journal) {
         try {
+            if (Strings.isNullOrEmpty(journal.getContent())
+                    && journal.id == 0) {
+                return;
+            }
             journalDao.createOrUpdate(journal);
         } catch (SQLException e) {
             e.printStackTrace();

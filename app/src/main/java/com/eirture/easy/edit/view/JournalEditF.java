@@ -57,6 +57,8 @@ public class JournalEditF extends AbstractEditFragment {
     private String contentStr = "";
     private AutoSave autoSave;
 
+    private boolean startAsSelectionPhoto = false;
+
     @AfterViews
     protected void initViews() {
         refresh();
@@ -81,6 +83,13 @@ public class JournalEditF extends AbstractEditFragment {
                 .subscribe();
 
         etContent.requestFocus();
+        if (startAsSelectionPhoto) {
+            selectPhoto();
+        }
+    }
+
+    public void startAsSelectPhoto() {
+        startAsSelectionPhoto = true;
     }
 
     public void setAutoSave(AutoSave autoSave) {
@@ -105,12 +114,15 @@ public class JournalEditF extends AbstractEditFragment {
     }
 
     @Click(R.id.op_photo)
-    void clickPhoto() {
+    protected void clickPhoto() {
 //        Intent intent = new Intent();
 //        intent.setType("image/*");
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(intent, );
+        selectPhoto();
+    }
 
+    private void selectPhoto() {
         startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
     }
 
@@ -147,11 +159,16 @@ public class JournalEditF extends AbstractEditFragment {
 
     @OnActivityResult(REQUEST_SELECT_PHOTO)
     protected void selectPhotoResult(int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK) {
+            if (startAsSelectionPhoto) {
+                getActivity().finish();
+            }
             return;
+        }
 
         Uri uri = data.getData();
         EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
+        startAsSelectionPhoto = false;
     }
 
     private String getImageMarkdownString(Uri contentURI) {

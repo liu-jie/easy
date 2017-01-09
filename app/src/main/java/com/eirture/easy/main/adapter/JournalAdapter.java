@@ -1,12 +1,11 @@
 package com.eirture.easy.main.adapter;
 
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.eirture.easy.base.widget.HeadSuperRecyclerAdapter;
 import com.eirture.easy.base.widget.OnItemClickListener;
 import com.eirture.easy.base.widget.OnItemLongClickListener;
-import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.adapter.holder.JournalHeadHolder;
 import com.eirture.easy.main.adapter.holder.JournalHolder;
 import com.eirture.easy.main.model.Journal;
@@ -25,12 +24,13 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     private OnItemLongClickListener<Integer> onItemLongClickListener;
     private OnItemClickListener<Integer> onItemClickListener;
+    private View.OnClickListener clickAddListener;
+    private View.OnClickListener clickSelectPhotoListener;
 
 
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
         journals = notebook.journals();
-        System.out.println("update notebook list ");
         notifyDataSetChanged();
     }
 
@@ -46,10 +46,12 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public void onBindHeadHolder(JournalHeadHolder headHolder, int position) {
-        headHolder.btnAdd.setOnClickListener(v ->
-                EditA_.intent(headHolder.btnAdd.getContext()).start());
-        headHolder.btnPhoto.setOnClickListener(v ->
-                Toast.makeText(headHolder.btnPhoto.getContext(), "new photo journal", Toast.LENGTH_SHORT).show());
+        headHolder.btnAdd.setOnClickListener(v -> {
+            if (clickAddListener != null) clickAddListener.onClick(v);
+        });
+        headHolder.btnPhoto.setOnClickListener(v -> {
+            if (clickSelectPhotoListener != null) clickSelectPhotoListener.onClick(v);
+        });
         headHolder.bindData(notebook);
     }
 
@@ -93,5 +95,13 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     public void addOnItemClickListener(OnItemClickListener<Integer> listener) {
         this.onItemClickListener = listener;
+    }
+
+    public void addOnClickAddListener(View.OnClickListener listener) {
+        this.clickAddListener = listener;
+    }
+
+    public void addOnClickSelectPhotoListener(View.OnClickListener listener) {
+        this.clickSelectPhotoListener = listener;
     }
 }

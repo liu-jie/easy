@@ -42,6 +42,8 @@ public class JournalF extends MainFragment {
     @Bean
     NotebookP notebookP;
 
+    private boolean isAdd = false;
+
     private AlertDialog itemOptionDialog;
 
     @AfterViews
@@ -61,6 +63,8 @@ public class JournalF extends MainFragment {
                 return true;
             });
             mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebookId).journalId(data).startForResult(REQUEST_EDIT_CODE));
+            mAdapter.addOnClickAddListener(v -> EditA_.intent(this).start());
+            mAdapter.addOnClickSelectPhotoListener(v -> EditA_.intent(this).journalId(-2).start());
 
             rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
             DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -94,6 +98,7 @@ public class JournalF extends MainFragment {
                 System.err.println(action.message);
             })
             .finality(() -> {
+                isAdd = false;  // refresh data finished, make isAdd market is false.
                 if (refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
             });
 
