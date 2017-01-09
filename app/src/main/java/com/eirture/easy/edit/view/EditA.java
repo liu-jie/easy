@@ -142,7 +142,7 @@ public class EditA extends BusActivity implements AutoSave {
         if (checkNotNull(content).equals(journal.getContent()))
             return;
 
-        editP.updateJournal(journal.refreshContent(content));
+        editP.updateJournal(journal.setContent(content));
         updated = true;
     }
 

@@ -39,6 +39,7 @@ public class JournalHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(Journal journal, int position) {
+        System.out.println("update position: " + position);
         this.position = position;
         if (journal == null)
             return;
@@ -65,6 +66,7 @@ public class JournalHolder extends RecyclerView.ViewHolder {
     }
 
     private void updatePicture(String picturesStr) {
+        System.out.println("JournalHolder" + picturesStr);
         tvPictureCount.setVisibility(View.GONE);
         ivPictureOne.setVisibility(View.GONE);
         ivPictureTwo.setVisibility(View.GONE);

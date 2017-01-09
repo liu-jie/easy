@@ -4,30 +4,32 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by eirture on 16-12-6.
  */
 @DatabaseTable
 public class Journal {
+    private final Pattern p = Pattern.compile("!\\[[^]]*]\\(([^)]+)\\)");
+
     public static final String FIELD_NOTE_ID = "noteId";
     public static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
-
 
     @DatabaseField(generatedId = true, canBeNull = false)
     public int id;
     @DatabaseField(canBeNull = false)
     private Date date;
-    @DatabaseField
-    private String pictures; //对应图片的表
     @DatabaseField(canBeNull = false)
     private int noteId; //笔记本
     @DatabaseField
     private String content = "";
 
-    private String mTitle = "";
-    private String mContentPreview = "";
+    private String pictures = null; //对应图片的表
+    private String mContentPreview = null;
+    private String mTitle = null;
 
     public Date getDate() {
         return date;
@@ -38,11 +40,22 @@ public class Journal {
     }
 
     public String getPictures() {
+        if (pictures == null) {
+            refreshPictures();
+        }
         return pictures;
     }
 
-    public void setPictures(String pictures) {
-        this.pictures = pictures;
+    public void refreshPictures() {
+        Matcher r = p.matcher(getContent());
+        StringBuffer sb = new StringBuffer();
+        while (r.find()) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(r.group(1));
+        }
+        this.pictures = sb.toString();
     }
 
     public int getNoteId() {
@@ -58,18 +71,15 @@ public class Journal {
         return content;
     }
 
-    public void setContent(String content) {
-        refreshContent(content);
-    }
-
-    public Journal refreshContent(String content) {
+    public Journal setContent(String content) {
         this.content = content;
-        refreshPreviewContent();
+        this.pictures = null; // should refresh pictures when next time to call getPictures().
+        this.mContentPreview = null; //
         return this;
     }
 
     public String getContentPreview() {
-        if ("".equals(mContentPreview)) {
+        if (mContentPreview == null) {
             refreshPreviewContent();
         }
         return mContentPreview;
@@ -94,7 +104,7 @@ public class Journal {
 
 
     public String getTitle() {
-        if ("".equals(mTitle)) {
+        if (mTitle == null) {
             refreshPreviewContent();
         }
         return mTitle;
