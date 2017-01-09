@@ -122,8 +122,24 @@ public class JournalEditF extends AbstractEditFragment {
         selectPhoto();
     }
 
+    AlertDialog selectPhotoDialog;
+
     private void selectPhoto() {
-        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
+        if (selectPhotoDialog == null) {
+            selectPhotoDialog = new AlertDialog.Builder(getContext())
+                    .setItems(R.array.add_photo, (dialog, which) -> {
+                        switch (which) {
+                            case 0:
+//                                startActivityForResult();
+                                break;
+                            case 1:
+                                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
+                                break;
+                        }
+                    }).create();
+        }
+
+        selectPhotoDialog.show();
     }
 
     @Click(R.id.op_bold)

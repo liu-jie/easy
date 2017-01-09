@@ -13,6 +13,7 @@
     <color name="black">@android:color/black</color>
 
     <color name="backgroundBlack">#212121</color>
+    <color name="transparentBlack">#33333333</color>
 
     <color name="textBlack">@color/black</color>
 
