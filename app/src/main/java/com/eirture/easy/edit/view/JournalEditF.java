@@ -60,7 +60,6 @@ public class JournalEditF extends AbstractEditFragment {
     @AfterViews
     protected void initViews() {
         refresh();
-
         hsvEditOptionBar.addOnScrollChangedListener((l, t, oldl, oldt) -> {
             View child = hsvEditOptionBar.getChildAt(hsvEditOptionBar.getChildCount() - 1);
             int diff = child.getRight() - (hsvEditOptionBar.getWidth() + l);
@@ -82,7 +81,6 @@ public class JournalEditF extends AbstractEditFragment {
                 .subscribe();
 
         etContent.requestFocus();
-
     }
 
     public void setAutoSave(AutoSave autoSave) {

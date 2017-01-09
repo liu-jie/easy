@@ -26,7 +26,6 @@ public class JournalHolder extends RecyclerView.ViewHolder {
     public TextView tvPictureCount, tvDescription, tvExtraDescription, tvDate;
     private int journalId, notebookId, position;
 
-
     public JournalHolder(View parent) {
         super(Views.inflate(parent, R.layout.i_journal));
 

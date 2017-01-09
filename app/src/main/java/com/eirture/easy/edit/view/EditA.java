@@ -113,6 +113,7 @@ public class EditA extends BusActivity implements AutoSave {
             return;
         if (currentF == editF) {
             editContent = editF.getContent();
+
         }
         fragment.setContent(editContent);
         fm.beginTransaction()
