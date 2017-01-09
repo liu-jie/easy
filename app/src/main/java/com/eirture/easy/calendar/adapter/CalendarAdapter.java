@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eirture.easy.R;
+import com.eirture.rxcommon.dates.DateUtil;
 import com.eirture.rxcommon.utils.Views;
 
 import java.text.SimpleDateFormat;
@@ -64,7 +65,6 @@ public class CalendarAdapter extends BaseAdapter {
         return 0;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -82,6 +82,14 @@ public class CalendarAdapter extends BaseAdapter {
             holder.unclickable().setText("");
         }
         return convertView;
+    }
+
+    public void lastMonth() {
+        updateDate(DateUtil.addMonth(date, -1));
+    }
+
+    public void nextMonth() {
+        updateDate(DateUtil.addMonth(date, 1));
     }
 
     private static class ViewHolder {

@@ -1,5 +1,6 @@
 package com.eirture.easy.calendar.view;
 
+import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -34,17 +35,21 @@ public class CalendarF extends MainFragment {
         }
         gvCalendar.setAdapter(mAdapter);
         tvTitleDate.setText(mAdapter.getTitleStr());
+        tvDayCount.setText(String.valueOf(21));
     }
 
 
-    @Click(R.id.btn_last)
-    protected void clickLastMonth() {
-
-    }
-
-    @Click(R.id.btn_next)
-    protected void clickNextMonth() {
-
+    @Click({R.id.btn_last, R.id.btn_next})
+    protected void clickPageMonths(View view) {
+        switch (view.getId()) {
+            case R.id.btn_last:
+                mAdapter.lastMonth();
+                break;
+            case R.id.btn_next:
+                mAdapter.nextMonth();
+                break;
+        }
+        tvTitleDate.setText(mAdapter.getTitleStr());
     }
 
     @Override

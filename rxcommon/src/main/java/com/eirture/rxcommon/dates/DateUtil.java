@@ -48,6 +48,14 @@ public class DateUtil {
                 && (thenYearDay == calendar.get(Calendar.DAY_OF_YEAR));
     }
 
+
+    public static Date addMonth(Date date, int n) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, n);
+        return cal.getTime();
+    }
+
     private DateUtil() {
     }
 
