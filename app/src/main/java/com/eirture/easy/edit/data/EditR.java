@@ -11,6 +11,8 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.ormlite.annotations.OrmLiteDao;
 
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -23,6 +25,8 @@ public class EditR {
 
     @OrmLiteDao(helper = DatabaseHelper.class)
     Dao<Journal, Integer> journalDao;
+
+    private final Pattern p = Pattern.compile("!\\[[^]]*]\\(([^)]+)\\)");
 
     public void saveJournal(@NonNull Journal journal) {
         try {
@@ -45,6 +49,18 @@ public class EditR {
                     } catch (SQLException e) {
                         subscriber.onError(e);
                     }
+                })
+                .doOnNext(journal -> {
+                    Matcher r = p.matcher(journal.getContent());
+                    StringBuffer sb = new StringBuffer();
+                    while (r.find()) {
+                        if (sb.length() > 0) {
+                            sb.append(",");
+                        }
+                        sb.append(r.group(1));
+                    }
+                    journal.setPictures(sb.toString());
+                    System.out.println("journal picture:  " + journal.getPictures());
                 })
                 .subscribeOn(Schedulers.io());
     }

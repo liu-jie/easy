@@ -30,6 +30,8 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -161,7 +163,7 @@ public class JournalEditF extends AbstractEditFragment {
             cursor.moveToFirst();
             int idx_path = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             int idx_name = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME);
-            result = String.format("\n![%s](%s)", cursor.getString(idx_name), cursor.getString(idx_path));
+            result = String.format("\n![%s](%s)", cursor.getString(idx_name), Uri.fromFile(new File(cursor.getString(idx_path))));
             cursor.close();
         }
         return result;
