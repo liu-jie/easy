@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
+import com.eirture.easy.calendar.view.CalendarF_;
 import com.eirture.easy.main.model.Notebook;
 import com.jakewharton.rxbinding.support.design.widget.RxBottomNavigationView;
 import com.jakewharton.rxbinding.view.RxView;
@@ -44,6 +45,7 @@ public class MainA extends BaseActivity {
         fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
         fragments.add(JournalF_.builder().build());
+        fragments.add(CalendarF_.builder().build());
         notebookId = Notebook.DEFAULT_NOTEBOOK_ID;
     }
 
@@ -52,7 +54,19 @@ public class MainA extends BaseActivity {
         setupToolbar();
         changePage(0);
         RxBottomNavigationView.itemSelections(navigationView)
-                .subscribe(menuItem -> changePage(0));
+                .subscribe(menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_list:
+                            changePage(0);
+                            break;
+                        case R.id.action_calendar:
+                            changePage(1);
+                            break;
+                        case R.id.action_mine:
+                            changePage(0);
+                            break;
+                    }
+                });
         RxView.clicks(tvTitle)
                 .subscribe(aVoid -> {
                     Toast.makeText(this, "show ", Toast.LENGTH_SHORT).show();
@@ -67,11 +81,11 @@ public class MainA extends BaseActivity {
     }
 
     private void changePage(int index) {
-        System.out.println("change tab index: " + index);
-        if (currentF == fragments.get(0))
+        MainFragment f = fragments.get(index);
+        if (currentF == f)
             return;
 
-        currentF = fragments.get(0);
+        currentF = f;
         currentF.updateNotebookId(notebookId);
         fm.beginTransaction()
                 .replace(R.id.container, currentF)

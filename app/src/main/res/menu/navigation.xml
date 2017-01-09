@@ -6,9 +6,9 @@
         android:title="@string/list" />
 
     <item
-        android:id="@+id/action_photos"
+        android:id="@+id/action_calendar"
         android:icon="@drawable/ic_action_photo"
-        android:title="@string/photo" />
+        android:title="@string/calendar" />
 
     <item
         android:id="@+id/action_mine"

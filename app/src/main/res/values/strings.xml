@@ -11,6 +11,7 @@
     <string name="edit">编辑</string>
     <string name="camera">相机</string>
     <string name="album">相册</string>
+    <string name="calendar">日历</string>
 
     <string-array name="journal_item_options">
         <item>删除</item>

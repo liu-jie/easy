@@ -36,7 +36,6 @@ public class JournalPreviewF extends AbstractEditFragment {
     }
 
     private void refresh() {
-        System.out.println("===========refresh:" + contentStr);
         String content = mCss + new AndDown().markdownToHtml(contentStr);
         wvMarkdown.loadDataWithBaseURL("file:///android_asset/", content, "text/html", "utf-8", null);
     }

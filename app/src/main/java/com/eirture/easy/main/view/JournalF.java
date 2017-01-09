@@ -45,6 +45,7 @@ public class JournalF extends MainFragment {
     private boolean isAdd = false;
 
     private AlertDialog itemOptionDialog;
+    private DividerItemDecoration decoration;
 
     @AfterViews
     void initViews() {
@@ -66,14 +67,15 @@ public class JournalF extends MainFragment {
             mAdapter.addOnClickAddListener(v -> EditA_.intent(this).start());
             mAdapter.addOnClickSelectPhotoListener(v -> EditA_.intent(this).journalId(-2).start());
 
-            rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
-            DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
-            rvContent.addItemDecoration(decoration);
 
-            refreshLayout.setOnRefreshListener(() -> refreshNotebook());
         }
+        rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvContent.addItemDecoration(decoration);
         rvContent.setAdapter(mAdapter);
+
+        refreshLayout.setOnRefreshListener(() -> refreshNotebook());
         refreshNotebook();
     }
 
