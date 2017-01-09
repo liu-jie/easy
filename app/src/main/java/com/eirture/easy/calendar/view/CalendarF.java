@@ -38,7 +38,6 @@ public class CalendarF extends MainFragment {
         tvDayCount.setText(String.valueOf(21));
     }
 
-
     @Click({R.id.btn_last, R.id.btn_next})
     protected void clickPageMonths(View view) {
         switch (view.getId()) {
@@ -47,6 +46,7 @@ public class CalendarF extends MainFragment {
                 break;
             case R.id.btn_next:
                 mAdapter.nextMonth();
+
                 break;
         }
         tvTitleDate.setText(mAdapter.getTitleStr());

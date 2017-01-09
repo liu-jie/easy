@@ -26,24 +26,31 @@ public class CalendarAdapter extends BaseAdapter {
 
     private Date date;
     private int counts = 0, preCounts = 0;
+    private int currentYear, currentMonth, today;
+    private Calendar calendar;
 
     public CalendarAdapter() {
+        Calendar cal = Calendar.getInstance();
+        currentYear = cal.get(Calendar.YEAR);
+        currentMonth = cal.get(Calendar.MONTH);
+        today = cal.get(Calendar.DAY_OF_MONTH);
+        calendar = Calendar.getInstance();
+
         updateDate(new Date());
     }
 
     public void updateDate(Date date) {
         this.date = checkNotNull(date);
         calculate();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
         notifyDataSetChanged();
     }
 
     private void calculate() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        preCounts = c.get(Calendar.DAY_OF_WEEK) - 1;
-        System.out.println(preCounts + " ============ ");
-        counts = WEEK_NAME.length + preCounts + c.getActualMaximum(Calendar.DATE);
+        preCounts = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        counts = WEEK_NAME.length + preCounts + calendar.getActualMaximum(Calendar.DATE);
     }
 
     public String getTitleStr() {
@@ -81,6 +88,8 @@ public class CalendarAdapter extends BaseAdapter {
         } else {
             holder.unclickable().setText("");
         }
+
+        holder.tvContent.setSelected(position - WEEK_NAME.length - preCounts == today);
         return convertView;
     }
 
@@ -88,8 +97,9 @@ public class CalendarAdapter extends BaseAdapter {
         updateDate(DateUtil.addMonth(date, -1));
     }
 
-    public void nextMonth() {
+    public boolean nextMonth() {
         updateDate(DateUtil.addMonth(date, 1));
+        return calendar.get(Calendar.YEAR) <= currentYear && calendar.get(Calendar.MONTH) <= currentMonth;
     }
 
     private static class ViewHolder {
@@ -102,7 +112,7 @@ public class CalendarAdapter extends BaseAdapter {
             tvContent = Views.find(parent, R.id.tv_content);
             tvContent.setOnClickListener(v -> {
                 if (clickable) {
-
+                    tvContent.setSelected(!tvContent.isSelected());
                 }
             });
         }
@@ -115,7 +125,7 @@ public class CalendarAdapter extends BaseAdapter {
 
         public ViewHolder clickable() {
             this.clickable = true;
-            tvContent.setBackground(ContextCompat.getDrawable(tvContent.getContext(), R.drawable.sel_btn_gray));
+            tvContent.setBackground(ContextCompat.getDrawable(tvContent.getContext(), R.drawable.sel_item_calendar));
             return this;
         }
 
