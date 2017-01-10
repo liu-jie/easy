@@ -26,7 +26,7 @@ public class CalendarAdapter extends BaseAdapter {
 
     private Date date;
     private int counts = 0, preCounts = 0;
-    private int currentYear, currentMonth, today;
+    private int currentYear, currentMonth, today, year, month;
     private Calendar calendar;
 
     public CalendarAdapter() {
@@ -36,21 +36,26 @@ public class CalendarAdapter extends BaseAdapter {
         today = cal.get(Calendar.DAY_OF_MONTH);
         calendar = Calendar.getInstance();
 
+        System.out.println("today: " + today);
+
         updateDate(new Date());
     }
 
     public void updateDate(Date date) {
         this.date = checkNotNull(date);
-        calculate();
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
 
+        calculate();
         notifyDataSetChanged();
     }
 
     private void calculate() {
         preCounts = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         counts = WEEK_NAME.length + preCounts + calendar.getActualMaximum(Calendar.DATE);
+        System.out.println("counts: " + (counts - WEEK_NAME.length - preCounts));
     }
 
     public String getTitleStr() {
@@ -89,7 +94,7 @@ public class CalendarAdapter extends BaseAdapter {
             holder.unclickable().setText("");
         }
 
-        holder.tvContent.setSelected(position - WEEK_NAME.length - preCounts == today);
+        holder.tvContent.setSelected(year == currentYear && month == currentMonth && position - WEEK_NAME.length - preCounts == today - 1);
         return convertView;
     }
 
