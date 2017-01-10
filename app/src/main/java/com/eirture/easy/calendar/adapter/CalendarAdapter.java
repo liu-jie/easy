@@ -34,10 +34,8 @@ public class CalendarAdapter extends BaseAdapter {
         currentYear = cal.get(Calendar.YEAR);
         currentMonth = cal.get(Calendar.MONTH);
         today = cal.get(Calendar.DAY_OF_MONTH);
+
         calendar = Calendar.getInstance();
-
-        System.out.println("today: " + today);
-
         updateDate(new Date());
     }
 
@@ -98,13 +96,14 @@ public class CalendarAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void lastMonth() {
+    public boolean lastMonth() {
         updateDate(DateUtil.addMonth(date, -1));
+        return true;
     }
 
     public boolean nextMonth() {
         updateDate(DateUtil.addMonth(date, 1));
-        return calendar.get(Calendar.YEAR) <= currentYear && calendar.get(Calendar.MONTH) <= currentMonth;
+        return !(currentYear == year && currentMonth == month);
     }
 
     private static class ViewHolder {
@@ -117,7 +116,6 @@ public class CalendarAdapter extends BaseAdapter {
             tvContent = Views.find(parent, R.id.tv_content);
             tvContent.setOnClickListener(v -> {
                 if (clickable) {
-                    tvContent.setSelected(!tvContent.isSelected());
                 }
             });
         }

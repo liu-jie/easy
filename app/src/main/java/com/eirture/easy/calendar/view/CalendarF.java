@@ -7,9 +7,9 @@ import android.widget.TextView;
 import com.eirture.easy.R;
 import com.eirture.easy.calendar.adapter.CalendarAdapter;
 import com.eirture.easy.main.view.MainFragment;
+import com.jakewharton.rxbinding.view.RxView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -25,6 +25,10 @@ public class CalendarF extends MainFragment {
     TextView tvTitleDate;
     @ViewById(R.id.gv_calendar)
     GridView gvCalendar;
+    @ViewById(R.id.btn_next)
+    View btnNext;
+    @ViewById(R.id.btn_last)
+    View btnLast;
 
     CalendarAdapter mAdapter;
 
@@ -36,20 +40,33 @@ public class CalendarF extends MainFragment {
         gvCalendar.setAdapter(mAdapter);
         tvTitleDate.setText(mAdapter.getTitleStr());
         tvDayCount.setText(String.valueOf(21));
+
+        initPageBtn();
     }
 
-    @Click({R.id.btn_last, R.id.btn_next})
-    protected void clickPageMonths(View view) {
-        switch (view.getId()) {
-            case R.id.btn_last:
-                mAdapter.lastMonth();
-                break;
-            case R.id.btn_next:
-                mAdapter.nextMonth();
+    private void initPageBtn() {
+        btnNext.setActivated(true);
+        btnLast.setActivated(true);
 
-                break;
-        }
+        RxView.clicks(btnNext)
+                .doOnNext(aVoid -> {
+                    btnNext.setActivated(mAdapter.nextMonth());
+                    btnLast.setActivated(true);
+                    clickPageBtn();
+                }).subscribe();
+
+        RxView.clicks(btnLast)
+                .doOnNext(aVoid -> {
+                    btnLast.setActivated(mAdapter.lastMonth());
+                    btnNext.setActivated(true);
+                    clickPageBtn();
+                }).subscribe();
+    }
+
+    private void clickPageBtn() {
         tvTitleDate.setText(mAdapter.getTitleStr());
+        btnNext.setClickable(btnNext.isActivated());
+        btnLast.setClickable(btnLast.isActivated());
     }
 
     @Override
