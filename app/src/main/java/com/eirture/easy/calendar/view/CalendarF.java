@@ -45,8 +45,8 @@ public class CalendarF extends MainFragment {
     }
 
     private void initPageBtn() {
-        btnNext.setActivated(true);
         btnLast.setActivated(true);
+        btnNext.setActivated(false);
 
         RxView.clicks(btnNext)
                 .doOnNext(aVoid -> {
