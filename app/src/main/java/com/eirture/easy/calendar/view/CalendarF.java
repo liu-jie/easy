@@ -1,5 +1,7 @@
 package com.eirture.easy.calendar.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -38,16 +40,12 @@ public class CalendarF extends MainFragment {
             mAdapter = new CalendarAdapter();
         }
         gvCalendar.setAdapter(mAdapter);
-        tvTitleDate.setText(mAdapter.getTitleStr());
         tvDayCount.setText(String.valueOf(21));
 
         initPageBtn();
     }
 
     private void initPageBtn() {
-        btnLast.setActivated(true);
-        btnNext.setActivated(false);
-
         RxView.clicks(btnNext)
                 .doOnNext(aVoid -> {
                     btnNext.setActivated(mAdapter.nextMonth());
@@ -61,6 +59,11 @@ public class CalendarF extends MainFragment {
                     btnNext.setActivated(true);
                     clickPageBtn();
                 }).subscribe();
+
+
+        btnLast.setActivated(true);
+        btnNext.setActivated(false);
+        clickPageBtn();
     }
 
     private void clickPageBtn() {

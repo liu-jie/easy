@@ -8,6 +8,7 @@
         android:id="@+id/tv_content"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_gravity="center"
         android:background="@drawable/sel_item_calendar"
         android:gravity="center"
         android:textColor="@color/sel_black_white"

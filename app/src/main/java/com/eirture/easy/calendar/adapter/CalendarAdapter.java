@@ -1,6 +1,5 @@
 package com.eirture.easy.calendar.adapter;
 
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -53,7 +52,6 @@ public class CalendarAdapter extends BaseAdapter {
     private void calculate() {
         preCounts = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         counts = WEEK_NAME.length + preCounts + calendar.getActualMaximum(Calendar.DATE);
-        System.out.println("counts: " + (counts - WEEK_NAME.length - preCounts));
     }
 
     public String getTitleStr() {
@@ -79,20 +77,19 @@ public class CalendarAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = Views.inflate(parent, R.layout.l_calendar_item);
-            holder = new ViewHolder(convertView);
+            holder = new ViewHolder(convertView = Views.inflate(parent, R.layout.i_calendar));
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (position < WEEK_NAME.length) {
-            holder.unclickable().setText(WEEK_NAME[position]);
-        } else if (position >= WEEK_NAME.length + preCounts) {
+
+        if (position >= WEEK_NAME.length + preCounts) {
             holder.clickable().setText("" + (position - (WEEK_NAME.length + preCounts) + 1));
         } else {
-            holder.unclickable().setText("");
+            holder.unclickable().setText(position < WEEK_NAME.length ? WEEK_NAME[position] : "");
         }
 
         holder.tvContent.setSelected(year == currentYear && month == currentMonth && position - WEEK_NAME.length - preCounts == today - 1);
+
         return convertView;
     }
 
@@ -108,27 +105,22 @@ public class CalendarAdapter extends BaseAdapter {
 
     private static class ViewHolder {
         private TextView tvContent;
-        private boolean clickable;
 
         public ViewHolder(View parent) {
             parent.setTag(this);
-
             tvContent = Views.find(parent, R.id.tv_content);
             tvContent.setOnClickListener(v -> {
-                if (clickable) {
-                }
+                System.out.println(tvContent.getText().toString());
             });
         }
 
         private ViewHolder unclickable() {
-            this.clickable = false;
-            tvContent.setBackground(null);
+            this.tvContent.setEnabled(false);
             return this;
         }
 
         public ViewHolder clickable() {
-            this.clickable = true;
-            tvContent.setBackground(ContextCompat.getDrawable(tvContent.getContext(), R.drawable.sel_item_calendar));
+            this.tvContent.setEnabled(true);
             return this;
         }
 

@@ -62,6 +62,7 @@
         android:id="@+id/gv_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:listSelector="@color/transparent"
         android:numColumns="7" />
 
 </LinearLayout>
