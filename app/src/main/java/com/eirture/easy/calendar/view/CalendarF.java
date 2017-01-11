@@ -13,8 +13,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Created by eirture on 17-1-9.
  */
@@ -32,13 +30,10 @@ public class CalendarF extends MainFragment {
     @ViewById(R.id.btn_last)
     View btnLast;
 
-    CalendarAdapter mAdapter;
+    CalendarAdapter mAdapter = new CalendarAdapter();
 
     @AfterViews
     protected void initViews() {
-        if (mAdapter == null) {
-            mAdapter = new CalendarAdapter();
-        }
         gvCalendar.setAdapter(mAdapter);
         initPageBtn();
 
@@ -74,7 +69,12 @@ public class CalendarF extends MainFragment {
 
     @Override
     protected void refreshNotebook() {
-        checkNotNull(notebook);
+        if (notebook == null) {
+            System.err.println("notebook is null");
+            return;
+        }
+
+        mAdapter.updateNotebook(notebook);
         if (tvDayCount != null)
             tvDayCount.setText(String.valueOf(notebook.getDays()));
     }
