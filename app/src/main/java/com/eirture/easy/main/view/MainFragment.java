@@ -1,22 +1,18 @@
 package com.eirture.easy.main.view;
 
 import com.eirture.easy.base.views.BusFragment;
+import com.eirture.easy.main.model.Notebook;
 
 /**
  * Created by eirture on 16-12-4.
  */
 
 public abstract class MainFragment extends BusFragment {
-    protected int notebookId = -1;
-    protected boolean needRefreshData = false;
+    protected Notebook notebook;
 
-    public void updateNotebookId(int notebookId) {
-        if (needRefreshData = (this.notebookId != notebookId)) {
-            this.notebookId = notebookId;
-
-            if (isVisible())
-                refreshNotebook();
-        }
+    public void updateNotebook(Notebook notebook) {
+        this.notebook = notebook;
+        refreshNotebook();
     }
 
     protected abstract void refreshNotebook();

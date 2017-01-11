@@ -10,8 +10,10 @@ import com.eirture.rxcommon.dates.DateUtil;
 import com.eirture.rxcommon.utils.Views;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CalendarAdapter extends BaseAdapter {
     static final String[] WEEK_NAME = {"日", "一", "二", "三", "四", "五", "六"};
     static final SimpleDateFormat DATE_TITLE_FORMAT = new SimpleDateFormat("yyyy年MM月");
-
+    private List<Date> markedDates = new ArrayList<>();
     private Date date;
     private int counts = 0, preCounts = 0;
     private int currentYear, currentMonth, today, year, month;

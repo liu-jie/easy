@@ -1,7 +1,5 @@
 package com.eirture.easy.calendar.view;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -14,6 +12,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by eirture on 17-1-9.
@@ -40,9 +40,9 @@ public class CalendarF extends MainFragment {
             mAdapter = new CalendarAdapter();
         }
         gvCalendar.setAdapter(mAdapter);
-        tvDayCount.setText(String.valueOf(21));
-
         initPageBtn();
+
+        refreshNotebook();
     }
 
     private void initPageBtn() {
@@ -74,6 +74,8 @@ public class CalendarF extends MainFragment {
 
     @Override
     protected void refreshNotebook() {
-
+        checkNotNull(notebook);
+        if (tvDayCount != null)
+            tvDayCount.setText(String.valueOf(notebook.getDays()));
     }
 }

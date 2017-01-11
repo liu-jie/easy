@@ -2,7 +2,6 @@ package com.eirture.easy.main.view;
 
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import com.eirture.easy.edit.event.DeleteJournalE;
 import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
-import com.eirture.easy.main.event.GetNotebookE;
 import com.eirture.easy.main.model.Notebook;
 import com.squareup.otto.Subscribe;
 
@@ -33,8 +31,8 @@ import org.androidannotations.annotations.ViewById;
 public class JournalF extends MainFragment {
     private static final int REQUEST_EDIT_CODE = 1;
 
-    @ViewById(R.id.swipe)
-    SwipeRefreshLayout refreshLayout;
+//    @ViewById(R.id.swipe)
+//    SwipeRefreshLayout refreshLayout;
 
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;
@@ -63,7 +61,7 @@ public class JournalF extends MainFragment {
                 itemOptionDialog.show();
                 return true;
             });
-            mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebookId).journalId(data).startForResult(REQUEST_EDIT_CODE));
+            mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebook.id()).journalId(data).startForResult(REQUEST_EDIT_CODE));
             mAdapter.addOnClickAddListener(v -> EditA_.intent(this).start());
             mAdapter.addOnClickSelectPhotoListener(v -> EditA_.intent(this).journalId(-2).start());
 
@@ -75,7 +73,6 @@ public class JournalF extends MainFragment {
         rvContent.addItemDecoration(decoration);
         rvContent.setAdapter(mAdapter);
 
-        refreshLayout.setOnRefreshListener(() -> refreshNotebook());
         refreshNotebook();
     }
 
@@ -90,26 +87,9 @@ public class JournalF extends MainFragment {
 
     @Override
     protected void refreshNotebook() {
-        notebookP.getNotebookById(notebookId);
-    }
-
-    private Result<Notebook> getNotebookResult = Result.<Notebook>create()
-            .successFunction(action -> updateNotebook(action))
-            .errorFunction(action -> {
-                Toast.makeText(getContext(), "notebook is not exist", Toast.LENGTH_SHORT).show();
-                System.err.println(action.message);
-            })
-            .finality(() -> {
-                isAdd = false;  // refresh data finished, make isAdd market is false.
-                if (refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
-            });
-
-    @Subscribe
-    public void loadNotebookEvent(GetNotebookE e) {
-        getNotebookResult.result(e);
-    }
-
-    private void updateNotebook(Notebook notebook) {
+        System.out.println("refresh notebook: " + notebook);
+        if (notebook == null)
+            return;
         mAdapter.updateNotebook(notebook);
     }
 
