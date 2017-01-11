@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgGray">
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_account"
+            style="@style/MineItemLayout"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_user" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/account" />
+
+            <TextView
+                style="@style/MineItemArrowText"
+                tools:text="登录" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_sync"
+            style="@style/MineItemLayout">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_cloud" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/sync" />
+
+            <TextView
+                style="@style/MineItemArrowText"
+                android:text="已禁用" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_notebook"
+            style="@style/MineItemLayout">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_notebook" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/notebook" />
+
+            <TextView
+                style="@style/MineItemArrowText"
+                tools:text="3" />
+        </LinearLayout>
+
+        <!-- 分割线 -->
+
+        <LinearLayout
+            android:id="@+id/item_lock"
+            style="@style/MineItemLayout"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_lock" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/password_and_fingerprint" />
+
+            <TextView style="@style/MineItemArrowText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_alert"
+            style="@style/MineItemLayout">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_alert" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/remind" />
+
+            <TextView style="@style/MineItemArrowText" />
+        </LinearLayout>
+
+        <!-- 分割线 -->
+
+        <LinearLayout
+            android:id="@+id/item_about"
+            style="@style/MineItemLayout"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                style="@style/MineItemHeadImage"
+                android:src="@drawable/ic_notebook_logo" />
+
+            <TextView
+                style="@style/MineItemDescriptionText"
+                android:text="@string/about" />
+
+            <TextView style="@style/MineItemArrowText" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

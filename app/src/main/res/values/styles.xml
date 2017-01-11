@@ -37,4 +37,35 @@
         <item name="android:textSize">24dp</item>
     </style>
 
+    <style name="MineItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/list_item_size</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/sel_item_click</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="MineItemHeadImage">
+        <item name="android:layout_width">@dimen/list_item_image_size</item>
+        <item name="android:layout_height">@dimen/list_item_image_size</item>
+    </style>
+
+    <style name="MineItemDescriptionText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
+    <style name="MineItemArrowText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableRight">@drawable/ic_arrow_gray_right</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>

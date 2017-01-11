@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/action_calendar"
-        android:icon="@drawable/ic_action_photo"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/calendar" />
 
     <item
