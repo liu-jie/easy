@@ -39,7 +39,7 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     }
 
     /**
-     * 判断是否需要更分组头信息
+     * 判断是否需要更新分组头信息
      *
      * @param position 减掉 head 后的索引值
      * @return
@@ -85,13 +85,13 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     @Override
     public JournalHolder onCreateHolder(ViewGroup parent, int viewType) {
         JournalHolder holder = new JournalHolder(parent);
-        holder.itemView.setOnLongClickListener(v -> {
+        holder.itemJournal.setOnLongClickListener(v -> {
             if (onItemLongClickListener == null)
                 return false;
             return onItemLongClickListener.onLongClick(holder.position());
         });
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.itemJournal.setOnClickListener(v -> {
             if (onItemClickListener == null)
                 return;
             onItemClickListener.onItemClick(holder.journalId());
