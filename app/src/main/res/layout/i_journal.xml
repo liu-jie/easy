@@ -1,80 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/sel_item_click"
-    android:orientation="horizontal"
-    android:paddingBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_one"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/default_head" />
+
+    <include layout="@layout/i_group_lab" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_marginLeft="1dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sel_item_click"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
 
         <ImageView
-            android:id="@+id/iv_two"
-            android:layout_width="40dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:id="@+id/iv_one"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
             tools:src="@drawable/default_head" />
 
-        <TextView
-            android:id="@+id/tv_photo_count"
-            android:layout_width="40dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/backgroundBlack"
-            android:gravity="center"
-            android:text="+5"
-            android:textColor="@color/white"
-            android:textSize="10dp" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginLeft="1dp"
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="4dp">
+            <ImageView
+                android:id="@+id/iv_two"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/default_head" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            <TextView
+                android:id="@+id/tv_photo_count"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/backgroundBlack"
+                android:gravity="center"
+                android:text="+5"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ellipsize="end"
-            android:lines="3"
-            android:textColor="@color/textBlack"
-            tools:text="自己人\n描述信息\n描述信息" />
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:lines="3"
+                android:textColor="@color/textBlack"
+                tools:text="自己人\n描述信息\n描述信息" />
+
+            <TextView
+                android:id="@+id/tv_extra_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textSize="10dp"
+                tools:text="下午3:51 江场二路100号，上海市，上海市" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_extra_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textSize="10dp"
-            tools:text="下午3:51 江场二路100号，上海市，上海市" />
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:text="星期一\n05"
+            android:textSize="12dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="right"
-        android:text="星期一\n05"
-        android:textSize="12dp" />
 </LinearLayout>

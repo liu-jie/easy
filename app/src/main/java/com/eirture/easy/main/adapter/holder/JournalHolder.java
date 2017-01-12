@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class JournalHolder extends RecyclerView.ViewHolder {
     public ImageView ivPictureOne, ivPictureTwo;
-    public TextView tvPictureCount, tvDescription, tvExtraDescription, tvDate;
+    public TextView tvPictureCount, tvDescription, tvExtraDescription, tvDate, tvGroupLabel;
     private int journalId, notebookId, position;
 
     public JournalHolder(View parent) {
@@ -36,11 +36,15 @@ public class JournalHolder extends RecyclerView.ViewHolder {
         tvDescription = Views.find(itemView, R.id.tv_description);
         tvExtraDescription = Views.find(itemView, R.id.tv_extra_description);
         tvDate = Views.find(itemView, R.id.tv_date);
+        tvGroupLabel = Views.find(itemView, R.id.group_lab);
     }
 
-    public void bindData(Journal journal, int position) {
-        System.out.println("update position: " + position);
+    public void bindData(Journal journal, int position, boolean showGroupLabel) {
         this.position = position;
+        tvGroupLabel.setVisibility(showGroupLabel ? View.VISIBLE : View.GONE);
+        if (showGroupLabel) {
+            tvGroupLabel.setText(journal.getGroupTitle());
+        }
         if (journal == null)
             return;
         this.journalId = journal.id;

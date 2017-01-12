@@ -12,7 +12,9 @@ import com.eirture.easy.main.model.Journal;
 import com.eirture.easy.main.model.Notebook;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by eirture on 16-12-4.
@@ -27,11 +29,27 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
     private View.OnClickListener clickAddListener;
     private View.OnClickListener clickSelectPhotoListener;
 
+    private Set<Integer> groupLabelIndexes = new HashSet<>();
 
     public void updateNotebook(Notebook notebook) {
         this.notebook = notebook;
         journals = notebook.journals();
+        groupLabelIndexes.clear();
         notifyDataSetChanged();
+    }
+
+    /**
+     * 判断是否需要更分组头信息
+     *
+     * @param position 减掉 head 后的索引值
+     * @return
+     */
+    public boolean changeGroupLabelStr(int position) {
+        return groupLabelIndexes.contains(new Integer(position));
+    }
+
+    public String getGroupLabelStr(int position) {
+        return journals.get(position).getGroupTitle();
     }
 
     @Override
@@ -41,7 +59,16 @@ public class JournalAdapter extends HeadSuperRecyclerAdapter<JournalHolder, Jour
 
     @Override
     public void onBindHolder(JournalHolder holder, int position) {
-        holder.bindData(journals.get(position), position);
+        Journal journal = journals.get(position);
+        boolean isDisplayGroupLabel = position == 0 || !journal.getGroupTitle().equals(journals.get(position - 1).getGroupTitle());
+        if (isDisplayGroupLabel) {
+            groupLabelIndexes.add(position); // head count == 1
+            if (position > 1) {
+                groupLabelIndexes.add(position - 1);
+            }
+        }
+        holder.bindData(journal, position, isDisplayGroupLabel
+        );
     }
 
     @Override

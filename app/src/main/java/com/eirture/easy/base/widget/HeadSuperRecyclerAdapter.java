@@ -23,7 +23,7 @@ public abstract class HeadSuperRecyclerAdapter<VH extends RecyclerView.ViewHolde
         } else if (position == 0) {
             return TYPE_HEAD;
         }
-        int dataType = getItemType(position);
+        int dataType = getItemType(position - 1);
         if (dataType == TYPE_HEAD || dataType == TYPE_LOADING) {
             throw new RuntimeException("HeadSuperRecyclerAdapter item type can`t is 2 or 3");
         }

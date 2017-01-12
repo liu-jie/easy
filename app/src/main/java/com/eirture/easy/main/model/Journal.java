@@ -3,6 +3,7 @@ package com.eirture.easy.main.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,8 @@ import java.util.regex.Pattern;
  */
 @DatabaseTable
 public class Journal {
+    private static final SimpleDateFormat GROUP_TITLE_FORMAT = new SimpleDateFormat("yyyy年MM月");
+
     private final Pattern p = Pattern.compile("!\\[[^]]*]\\(([^)]+)\\)");
 
     public static final String FIELD_NOTE_ID = "noteId";
@@ -117,5 +120,9 @@ public class Journal {
         j.date = new Date();
         j.noteId = noteId;
         return j;
+    }
+
+    public String getGroupTitle() {
+        return date == null ? "#" : GROUP_TITLE_FORMAT.format(date);
     }
 }

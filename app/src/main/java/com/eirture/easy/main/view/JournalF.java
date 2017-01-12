@@ -6,6 +6,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eirture.easy.R;
@@ -15,7 +17,6 @@ import com.eirture.easy.edit.event.DeleteJournalE;
 import com.eirture.easy.edit.view.EditA_;
 import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
-import com.eirture.easy.main.model.Notebook;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
@@ -31,16 +32,14 @@ import org.androidannotations.annotations.ViewById;
 public class JournalF extends MainFragment {
     private static final int REQUEST_EDIT_CODE = 1;
 
-//    @ViewById(R.id.swipe)
-//    SwipeRefreshLayout refreshLayout;
-
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;
+    @ViewById(R.id.group_lab)
+    TextView groupLab;
+
     JournalAdapter mAdapter;
     @Bean
     NotebookP notebookP;
-
-    private boolean isAdd = false;
 
     private AlertDialog itemOptionDialog;
     private DividerItemDecoration decoration;
@@ -72,8 +71,28 @@ public class JournalF extends MainFragment {
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(decoration);
         rvContent.setAdapter(mAdapter);
-
+        initGroupLab();
         refreshNotebook();
+    }
+
+    private void initGroupLab() {
+        rvContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition() - 1;
+
+                groupLab.setVisibility(firstItemPosition >= 0 ? View.VISIBLE : View.GONE);
+                if (mAdapter.changeGroupLabelStr(firstItemPosition)) {
+                    groupLab.setText(mAdapter.getGroupLabelStr(firstItemPosition));
+                }
+            }
+        });
     }
 
     private Result<BusMessage> deleteJournalResult = Result.<BusMessage>create()
@@ -87,7 +106,6 @@ public class JournalF extends MainFragment {
 
     @Override
     protected void refreshNotebook() {
-        System.out.println("refresh notebook: " + notebook);
         if (notebook == null)
             return;
         mAdapter.updateNotebook(notebook);
