@@ -10,4 +10,6 @@ public class Constant {
 
     public static final int ERROR_CODE_DEFAULT = 0;
     public static final int ERROR_CODE_SQL = 1;
+
+    public static final String PICTURE_DIR_NAME = "easy";
 }

@@ -1,11 +1,14 @@
 package com.eirture.easy.edit.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Spanned;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eirture.easy.BuildConfig;
 import com.eirture.easy.R;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
@@ -31,6 +35,12 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -39,7 +49,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @EFragment(R.layout.f_journal_edit)
 public class JournalEditF extends AbstractEditFragment {
+    private static final SimpleDateFormat PICTURE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    private static final String[] PERMS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_SELECT_PHOTO = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+
+    private static final int RC_WRITE_EXTERNAL_STORAGE = 1;
 
     @FragmentArg
     int journalId = -1;
@@ -130,7 +145,7 @@ public class JournalEditF extends AbstractEditFragment {
                     .setItems(R.array.add_photo, (dialog, which) -> {
                         switch (which) {
                             case 0:
-//                                startActivityForResult();
+                                methodRequiresPermission();
                                 break;
                             case 1:
                                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
@@ -140,6 +155,101 @@ public class JournalEditF extends AbstractEditFragment {
         }
 
         selectPhotoDialog.show();
+    }
+
+    @OnActivityResult(REQUEST_SELECT_PHOTO)
+    protected void selectPhotoResult(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            if (startAsSelectionPhoto) {
+                getActivity().finish();
+            }
+            return;
+        }
+
+        Uri uri = data.getData();
+        EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
+        startAsSelectionPhoto = false;
+    }
+
+
+    File photoFile = null;
+    Uri cameraContentUri;
+
+    private void startCamera() {
+        if (!isExternalStorageWritable()) {
+            System.err.println("外部存储不可用");
+            Toast.makeText(getContext(), "外部存储不可用", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (photoFile != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        cameraContentUri = FileProvider.getUriForFile(getContext(),
+                                BuildConfig.APPLICATION_ID + ".provider",
+                                photoFile));
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    @OnActivityResult(REQUEST_IMAGE_CAPTURE)
+    protected void imageCaptureResult(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+
+        if (cameraContentUri == null) {
+            System.err.println("cameraContentUri file == null");
+            return;
+        }
+
+//        EditorUtil.insert2EditText(etContent, getImageMarkdownString(cameraContentUri));
+        startAsSelectionPhoto = false;
+
+    }
+
+    File pictureDir;
+
+    private File createImageFile() throws IOException {
+//        if (pictureDir == null) {
+//            pictureDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), Constant.PICTURE_DIR_NAME);
+//            if (!pictureDir.mkdirs()) {
+//                Log.d("JournalEditF", "Directory not created");
+//            }
+//        }
+
+        String imageFileName = "JPEG_" + PICTURE_NAME_FORMAT.format(new Date()) + "_";
+
+        File image = File.createTempFile(imageFileName,
+                ".jpg",
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+        return image;
+    }
+
+    @AfterPermissionGranted(RC_WRITE_EXTERNAL_STORAGE)
+    private void methodRequiresPermission() {
+        if (EasyPermissions.hasPermissions(getContext(), PERMS)) {
+            startCamera();
+        } else {
+            EasyPermissions.requestPermissions(this, "we need write photo file to external storage.",
+                    RC_WRITE_EXTERNAL_STORAGE, PERMS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    private boolean isExternalStorageWritable() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
     @Click(R.id.op_bold)
@@ -171,20 +281,6 @@ public class JournalEditF extends AbstractEditFragment {
     void clickLink() {
         initLinkDialog();
         addLinkDialog.show();
-    }
-
-    @OnActivityResult(REQUEST_SELECT_PHOTO)
-    protected void selectPhotoResult(int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            if (startAsSelectionPhoto) {
-                getActivity().finish();
-            }
-            return;
-        }
-
-        Uri uri = data.getData();
-        EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
-        startAsSelectionPhoto = false;
     }
 
     private String getImageMarkdownString(Uri contentURI) {

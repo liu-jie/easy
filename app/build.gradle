@@ -47,7 +47,10 @@ dependencies {
 
     compile 'com.google.guava:guava:20.0'
     compile 'com.commonsware.cwac:anddown:0.2.4'
+    compile 'pub.devrel:easypermissions:0.2.1'
+
     compile project(':rxcommon')
+
 }
 
 apt {
