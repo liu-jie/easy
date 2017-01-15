@@ -46,6 +46,8 @@
         <activity
             android:name=".edit.view.SelectPhotoA"
             android:theme="@style/DialogTheme" />
+
+        <activity android:name=".mine.view.AboutA_" />
     </application>
 
 </manifest>

@@ -45,6 +45,6 @@ public class MineF extends MainFragment {
 
     @Click(R.id.item_about)
     protected void clickAbout() {
-
+        AboutA_.intent(this).start();
     }
 }
