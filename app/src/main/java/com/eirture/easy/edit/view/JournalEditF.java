@@ -25,6 +25,7 @@ import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
 import com.eirture.easy.main.model.Notebook;
 import com.eirture.rxcommon.utils.Views;
+import com.google.common.io.Files;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -49,7 +50,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @EFragment(R.layout.f_journal_edit)
 public class JournalEditF extends AbstractEditFragment {
-    private static final SimpleDateFormat PICTURE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    private static final SimpleDateFormat PICTURE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
     private static final String[] PERMS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_SELECT_PHOTO = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -130,10 +131,6 @@ public class JournalEditF extends AbstractEditFragment {
 
     @Click(R.id.op_photo)
     protected void clickPhoto() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, );
         selectPhoto();
     }
 
@@ -167,7 +164,13 @@ public class JournalEditF extends AbstractEditFragment {
         }
 
         Uri uri = data.getData();
-        EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
+        try {
+            EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "图片获取失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
         startAsSelectionPhoto = false;
     }
 
@@ -177,7 +180,6 @@ public class JournalEditF extends AbstractEditFragment {
 
     private void startCamera() {
         if (!isExternalStorageWritable()) {
-            System.err.println("外部存储不可用");
             Toast.makeText(getContext(), "外部存储不可用", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -200,33 +202,36 @@ public class JournalEditF extends AbstractEditFragment {
     }
 
     @OnActivityResult(REQUEST_IMAGE_CAPTURE)
-    protected void imageCaptureResult(int resultCode, Intent data) {
+    protected void imageCaptureResult(int resultCode) {
         if (resultCode != Activity.RESULT_OK)
             return;
-
-        if (cameraContentUri == null) {
-            System.err.println("cameraContentUri file == null");
+        File privateImage;
+        try {
+            privateImage = checkNotNull(copy2PrivateStorage(photoFile.getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "图片获取失败", Toast.LENGTH_SHORT).show();
             return;
         }
 
-//        EditorUtil.insert2EditText(etContent, getImageMarkdownString(cameraContentUri));
+        EditorUtil.insert2EditText(etContent, String.format("![%s](%s)", privateImage.getName(), "file://" + privateImage.getAbsoluteFile()));
         startAsSelectionPhoto = false;
-
     }
 
-    File pictureDir;
+    private File copy2PrivateStorage(String path) throws IOException {
+        File from = new File(path);
+        File to = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), from.getName());
+        Files.copy(from, to);
+        return to;
+    }
+
+    private static final String PICTURE_NAME_FORMAT = "JPEG_%s_";
 
     private File createImageFile() throws IOException {
-//        if (pictureDir == null) {
-//            pictureDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), Constant.PICTURE_DIR_NAME);
-//            if (!pictureDir.mkdirs()) {
-//                Log.d("JournalEditF", "Directory not created");
-//            }
-//        }
+        String imageFileName = String.format(PICTURE_NAME_FORMAT, PICTURE_DATE_FORMAT.format(new Date()));
 
-        String imageFileName = "JPEG_" + PICTURE_NAME_FORMAT.format(new Date()) + "_";
-
-        File image = File.createTempFile(imageFileName,
+        File image = File.createTempFile(
+                imageFileName,
                 ".jpg",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
         return image;
@@ -283,14 +288,14 @@ public class JournalEditF extends AbstractEditFragment {
         addLinkDialog.show();
     }
 
-    private String getImageMarkdownString(Uri contentURI) {
+    private String getImageMarkdownString(Uri contentURI) throws IOException {
         String result = "";
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
         if (cursor != null) { // Source is Dropbox or other similar local file path
             cursor.moveToFirst();
             int idx_path = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             int idx_name = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME);
-            result = String.format("\n![%s](%s)", cursor.getString(idx_name), Uri.fromFile(new File(cursor.getString(idx_path))));
+            result = String.format("\n![%s](%s)", cursor.getString(idx_name), Uri.fromFile(copy2PrivateStorage(cursor.getString(idx_path))));
             cursor.close();
         }
         return result;
