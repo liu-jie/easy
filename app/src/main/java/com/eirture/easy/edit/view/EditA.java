@@ -35,7 +35,9 @@ public class EditA extends BusActivity implements AutoSave {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日");
 
     @Extra
-    int journalId = -1;  // if journalId == -1 that create new journal, and if journalId == -2, start as select photo mode;
+    int journalId = -1;  // if journalId == -1 that create new journal;
+    @Extra
+    String photoPath;
     @Extra
     int notebookId = Notebook.DEFAULT_NOTEBOOK_ID;
 
@@ -57,9 +59,12 @@ public class EditA extends BusActivity implements AutoSave {
     @AfterInject
     void init() {
         previewF = JournalPreviewF_.builder().build();
-        editF = JournalEditF_.builder().journalId(journalId).noteId(notebookId).build();
+        editF = JournalEditF_.builder()
+                .journalId(journalId)
+                .noteId(notebookId)
+                .imagePath(photoPath)
+                .build();
         editF.setAutoSave(this);
-
         fm = getSupportFragmentManager();
     }
 
@@ -73,9 +78,6 @@ public class EditA extends BusActivity implements AutoSave {
         } else {
             journal = Journal.newInstance(notebookId);
             changeFragment(editF);
-            if (journalId == -2) {
-                editF.startAsSelectPhoto();
-            }
         }
     }
 

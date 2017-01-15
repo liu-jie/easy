@@ -1,14 +1,8 @@
 package com.eirture.easy.edit.view;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Spanned;
@@ -19,13 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eirture.easy.BuildConfig;
 import com.eirture.easy.R;
 import com.eirture.easy.base.utils.EditorUtil;
 import com.eirture.easy.base.widget.HorizontalScrollViewPro;
 import com.eirture.easy.main.model.Notebook;
 import com.eirture.rxcommon.utils.Views;
-import com.google.common.io.Files;
+import com.google.common.base.Strings;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,11 +29,7 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -50,15 +39,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @EFragment(R.layout.f_journal_edit)
 public class JournalEditF extends AbstractEditFragment {
-    private static final SimpleDateFormat PICTURE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
-    private static final String[] PERMS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_SELECT_PHOTO = 1;
-    private static final int REQUEST_IMAGE_CAPTURE = 2;
-
-    private static final int RC_WRITE_EXTERNAL_STORAGE = 1;
 
     @FragmentArg
     int journalId = -1;
+    @FragmentArg
+    String imagePath;
     @FragmentArg
     int noteId = Notebook.DEFAULT_NOTEBOOK_ID;
 
@@ -72,12 +58,19 @@ public class JournalEditF extends AbstractEditFragment {
 
     private String contentStr = "";
     private AutoSave autoSave;
-
-    private boolean startAsSelectionPhoto = false;
+    boolean needInsertImage = true;
 
     @AfterViews
     protected void initViews() {
         refresh();
+
+        if (needInsertImage) {
+            if (!Strings.isNullOrEmpty(imagePath)) {
+                insertPhoto(imagePath);
+            }
+            needInsertImage = false;
+        }
+
         hsvEditOptionBar.addOnScrollChangedListener((l, t, oldl, oldt) -> {
             View child = hsvEditOptionBar.getChildAt(hsvEditOptionBar.getChildCount() - 1);
             int diff = child.getRight() - (hsvEditOptionBar.getWidth() + l);
@@ -99,13 +92,6 @@ public class JournalEditF extends AbstractEditFragment {
                 .subscribe();
 
         etContent.requestFocus();
-        if (startAsSelectionPhoto) {
-            selectPhoto();
-        }
-    }
-
-    public void startAsSelectPhoto() {
-        startAsSelectionPhoto = true;
     }
 
     public void setAutoSave(AutoSave autoSave) {
@@ -131,119 +117,24 @@ public class JournalEditF extends AbstractEditFragment {
 
     @Click(R.id.op_photo)
     protected void clickPhoto() {
-        selectPhoto();
-    }
-
-    AlertDialog selectPhotoDialog;
-
-    private void selectPhoto() {
-        if (selectPhotoDialog == null) {
-            selectPhotoDialog = new AlertDialog.Builder(getContext())
-                    .setItems(R.array.add_photo, (dialog, which) -> {
-                        switch (which) {
-                            case 0:
-                                methodRequiresPermission();
-                                break;
-                            case 1:
-                                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_SELECT_PHOTO);
-                                break;
-                        }
-                    }).create();
-        }
-
-        selectPhotoDialog.show();
+        SelectPhotoA.start(this, REQUEST_SELECT_PHOTO);
     }
 
     @OnActivityResult(REQUEST_SELECT_PHOTO)
-    protected void selectPhotoResult(int resultCode, Intent data) {
+    protected void selectPhotoResult(int resultCode, @OnActivityResult.Extra(SelectPhotoA.RESULT_PATH_KEY) String path) {
         if (resultCode != Activity.RESULT_OK) {
-            if (startAsSelectionPhoto) {
-                getActivity().finish();
-            }
             return;
         }
-
-        Uri uri = data.getData();
-        try {
-            EditorUtil.insert2EditText(etContent, getImageMarkdownString(uri));
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "图片获取失败", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        startAsSelectionPhoto = false;
+        insertPhoto(path);
     }
 
-
-    File photoFile = null;
-    Uri cameraContentUri;
-
-    private void startCamera() {
-        if (!isExternalStorageWritable()) {
-            Toast.makeText(getContext(), "外部存储不可用", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (photoFile != null) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        cameraContentUri = FileProvider.getUriForFile(getContext(),
-                                BuildConfig.APPLICATION_ID + ".provider",
-                                photoFile));
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-
-    @OnActivityResult(REQUEST_IMAGE_CAPTURE)
-    protected void imageCaptureResult(int resultCode) {
-        if (resultCode != Activity.RESULT_OK)
-            return;
-        File privateImage;
-        try {
-            privateImage = checkNotNull(copy2PrivateStorage(photoFile.getAbsolutePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "图片获取失败", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        EditorUtil.insert2EditText(etContent, String.format("![%s](%s)", privateImage.getName(), "file://" + privateImage.getAbsoluteFile()));
-        startAsSelectionPhoto = false;
-    }
-
-    private File copy2PrivateStorage(String path) throws IOException {
-        File from = new File(path);
-        File to = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), from.getName());
-        Files.copy(from, to);
-        return to;
-    }
-
-    private static final String PICTURE_NAME_FORMAT = "JPEG_%s_";
-
-    private File createImageFile() throws IOException {
-        String imageFileName = String.format(PICTURE_NAME_FORMAT, PICTURE_DATE_FORMAT.format(new Date()));
-
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
-        return image;
-    }
-
-    @AfterPermissionGranted(RC_WRITE_EXTERNAL_STORAGE)
-    private void methodRequiresPermission() {
-        if (EasyPermissions.hasPermissions(getContext(), PERMS)) {
-            startCamera();
+    private void insertPhoto(@NonNull String path) {
+        File imageFile = new File(Uri.parse(path).getPath());
+        if (imageFile.exists()) {
+            EditorUtil.insert2EditText(etContent, String.format("\n![%s](%s)\n", imageFile.getName(), path));
         } else {
-            EasyPermissions.requestPermissions(this, "we need write photo file to external storage.",
-                    RC_WRITE_EXTERNAL_STORAGE, PERMS);
+            System.out.println(path);
+            Toast.makeText(getContext(), "图片不存在", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -251,10 +142,6 @@ public class JournalEditF extends AbstractEditFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    private boolean isExternalStorageWritable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
     @Click(R.id.op_bold)
@@ -286,19 +173,6 @@ public class JournalEditF extends AbstractEditFragment {
     void clickLink() {
         initLinkDialog();
         addLinkDialog.show();
-    }
-
-    private String getImageMarkdownString(Uri contentURI) throws IOException {
-        String result = "";
-        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor != null) { // Source is Dropbox or other similar local file path
-            cursor.moveToFirst();
-            int idx_path = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            int idx_name = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME);
-            result = String.format("\n![%s](%s)", cursor.getString(idx_name), Uri.fromFile(copy2PrivateStorage(cursor.getString(idx_path))));
-            cursor.close();
-        }
-        return result;
     }
 
     AlertDialog addLinkDialog;

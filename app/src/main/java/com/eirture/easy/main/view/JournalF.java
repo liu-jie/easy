@@ -15,6 +15,7 @@ import com.eirture.easy.base.bus.BusMessage;
 import com.eirture.easy.base.bus.Result;
 import com.eirture.easy.edit.event.DeleteJournalE;
 import com.eirture.easy.edit.view.EditA_;
+import com.eirture.easy.edit.view.SelectPhotoA;
 import com.eirture.easy.main.NotebookP;
 import com.eirture.easy.main.adapter.JournalAdapter;
 import com.squareup.otto.Subscribe;
@@ -31,7 +32,7 @@ import org.androidannotations.annotations.ViewById;
 @EFragment(R.layout.c_recycler_view)
 public class JournalF extends MainFragment {
     private static final int REQUEST_EDIT_CODE = 1;
-
+    private static final int REQUEST_SELECT_PHOTO = 2;
     @ViewById(R.id.rv_content)
     RecyclerView rvContent;
     @ViewById(R.id.group_lab)
@@ -62,7 +63,7 @@ public class JournalF extends MainFragment {
             });
             mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebook.id()).journalId(data).startForResult(REQUEST_EDIT_CODE));
             mAdapter.addOnClickAddListener(v -> EditA_.intent(this).start());
-            mAdapter.addOnClickSelectPhotoListener(v -> EditA_.intent(this).journalId(-2).start());
+            mAdapter.addOnClickSelectPhotoListener(v -> SelectPhotoA.start(this, REQUEST_SELECT_PHOTO));
 
             decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.line_item_decoration));
@@ -73,6 +74,16 @@ public class JournalF extends MainFragment {
         rvContent.setAdapter(mAdapter);
         initGroupLab();
         refreshNotebook();
+    }
+
+    @OnActivityResult(REQUEST_SELECT_PHOTO)
+    protected void resultSelectPhoto(int resultCode, @OnActivityResult.Extra(SelectPhotoA.RESULT_PATH_KEY) String path) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+        EditA_.intent(this)
+                .notebookId(notebook.id())
+                .photoPath(path)
+                .startForResult(REQUEST_EDIT_CODE);
     }
 
     private void initGroupLab() {

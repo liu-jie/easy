@@ -37,10 +37,15 @@
                 android:resource="@xml/provider_paths" />
 
         </provider>
+
         <activity
             android:name=".edit.view.EditA_"
             android:theme="@style/AppTheme.LightTheme"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".edit.view.SelectPhotoA"
+            android:theme="@style/DialogTheme" />
     </application>
 
 </manifest>
