@@ -73,7 +73,6 @@ public class JournalHolder extends RecyclerView.ViewHolder {
     }
 
     private void updatePicture(String picturesStr) {
-        System.out.println("JournalHolder" + picturesStr);
         tvPictureCount.setVisibility(View.GONE);
         ivPictureOne.setVisibility(View.GONE);
         ivPictureTwo.setVisibility(View.GONE);

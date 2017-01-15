@@ -62,7 +62,7 @@ public class JournalF extends MainFragment {
                 return true;
             });
             mAdapter.addOnItemClickListener(data -> EditA_.intent(this).notebookId(notebook.id()).journalId(data).startForResult(REQUEST_EDIT_CODE));
-            mAdapter.addOnClickAddListener(v -> EditA_.intent(this).start());
+            mAdapter.addOnClickAddListener(v -> EditA_.intent(this).notebookId(notebook.id()).startForResult(REQUEST_EDIT_CODE));
             mAdapter.addOnClickSelectPhotoListener(v -> SelectPhotoA.start(this, REQUEST_SELECT_PHOTO));
 
             decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -126,7 +126,8 @@ public class JournalF extends MainFragment {
     protected void editResult(int resultCode) {
         if (resultCode != Activity.RESULT_OK)
             return;
-
+        System.out.println("refresh notebook.-----------------------");
+        notebookP.getNotebookById(notebook.id());
         refreshNotebook();
     }
 

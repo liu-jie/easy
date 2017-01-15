@@ -144,12 +144,13 @@ public class EditA extends BusActivity implements AutoSave {
         if (checkNotNull(content).equals(journal.getContent()))
             return;
 
-        editP.updateJournal(journal.setContent(content));
         updated = true;
+        editP.updateJournal(journal.setContent(content));
     }
 
     @Override
     public void finish() {
+        System.out.println("updated: " + updated);
         if (updated) {
             setResult(RESULT_OK);
         }
