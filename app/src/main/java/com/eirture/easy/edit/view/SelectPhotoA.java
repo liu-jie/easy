@@ -85,7 +85,7 @@ public class SelectPhotoA extends BaseActivity {
             }
 
             if (photoFile != null) {
-                currentImagePath = "file://" + photoFile.getAbsolutePath();
+                currentImagePath = photoFile.getAbsolutePath();
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,
                         FileProvider.getUriForFile(this,
                                 BuildConfig.APPLICATION_ID + ".provider",
@@ -122,17 +122,22 @@ public class SelectPhotoA extends BaseActivity {
         if (cursor != null) { // Source is Dropbox or other similar local file path
             cursor.moveToFirst();
             int idx_path = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = "file://" + cursor.getString(idx_path);
+            result = cursor.getString(idx_path);
             cursor.close();
         }
         return result;
     }
 
-    private File copy2PrivateStorage(String path) throws IOException {
+    private String copy2PrivateStorage(String path) {
         File from = new File(path);
         File to = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), from.getName());
-        Files.copy(from, to);
-        return to;
+        try {
+            Files.copy(from, to);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return from.getPath();
+        }
+        return to.getPath();
     }
 
     private static File createImageFile() throws IOException {
@@ -147,7 +152,7 @@ public class SelectPhotoA extends BaseActivity {
     private void returnPath() {
         if (!Strings.isNullOrEmpty(currentImagePath)) {
             Intent intent = new Intent();
-            intent.putExtra(RESULT_PATH_KEY, currentImagePath);
+            intent.putExtra(RESULT_PATH_KEY, "file://" + copy2PrivateStorage(currentImagePath));
             setResult(RESULT_OK, intent);
         }
         finish();
