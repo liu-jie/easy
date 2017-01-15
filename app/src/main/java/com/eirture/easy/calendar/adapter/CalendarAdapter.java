@@ -68,6 +68,8 @@ public class CalendarAdapter extends BaseAdapter {
                     days.add(cal.get(Calendar.DAY_OF_MONTH));
                 }).subscribe();
 
+        refreshMarked();
+
         notifyDataSetChanged();
     }
 
@@ -78,12 +80,15 @@ public class CalendarAdapter extends BaseAdapter {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
 
+        refreshMarked();
+        calculate();
+        notifyDataSetChanged();
+    }
+
+    private void refreshMarked() {
         markeds = markedDays.get(generateKey(year, month));
         if (markeds == null)
             markeds = Collections.emptyList();
-
-        calculate();
-        notifyDataSetChanged();
     }
 
     private int generateKey(int year, int month) {
