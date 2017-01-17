@@ -74,7 +74,7 @@
 
             <TextView
                 style="@style/MineItemDescriptionText"
-                android:text="@string/password_and_fingerprint" />
+                android:text="@string/password" />
 
             <TextView style="@style/MineItemArrowText" />
         </LinearLayout>

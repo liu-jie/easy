@@ -16,8 +16,11 @@
     <string name="account">账户</string>
     <string name="notebook">日记本</string>
     <string name="password_and_fingerprint">密码 + 指纹</string>
+    <string name="password">密码</string>
     <string name="remind">提醒</string>
     <string name="about">关于</string>
+    <string name="change_password">修改密码</string>
+    <string name="fingerprint_unlock">指纹解锁</string>
 
     <string-array name="journal_item_options">
         <item>删除</item>

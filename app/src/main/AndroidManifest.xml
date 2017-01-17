@@ -48,6 +48,8 @@
             android:theme="@style/DialogTheme" />
 
         <activity android:name=".mine.view.AboutA_" />
+        <activity android:name=".mine.view.PasswordA_" />
+        <activity android:name=".mine.view.ChangePasswordA_" />
     </application>
 
 </manifest>
