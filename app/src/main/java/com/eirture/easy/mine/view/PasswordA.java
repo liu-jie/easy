@@ -40,15 +40,14 @@ public class PasswordA extends BaseActivity {
                 .subscribe(aVoid -> ChangePasswordA_.intent(this).start());
 
         boolean passwordIsActive = passwordPrefs.openPassword().get();
-        refreshPasswordUseable(passwordIsActive);
+        refreshPasswordActive(passwordIsActive);
 
         switchPassword.setChecked(passwordIsActive);
         switchFingerprint.setChecked(passwordPrefs.openFingerprint().get());
 
         switchFingerprint.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> passwordPrefs.edit().openFingerprint().put(isChecked).apply());
-        switchPassword.setOnClickListener(
-                view -> switchPassword(switchPassword.isChecked()));
+        switchPassword.setOnClickListener(view -> switchPassword(switchPassword.isChecked()));
 
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> back(v));
@@ -57,7 +56,6 @@ public class PasswordA extends BaseActivity {
     boolean openPassword;
 
     private void switchPassword(boolean isChecked) {
-        System.out.println(isChecked);
         openPassword = isChecked;
         ChangePasswordA_.intent(this)
                 .onlyCheckPassword(!openPassword)   // only check when close password.
@@ -71,7 +69,7 @@ public class PasswordA extends BaseActivity {
             return;
         }
 
-        refreshPasswordUseable(openPassword);
+        refreshPasswordActive(openPassword);
         if (openPassword) {
             passwordPrefs.edit().openPassword().put(true).apply();
         } else {
@@ -82,7 +80,7 @@ public class PasswordA extends BaseActivity {
         }
     }
 
-    private void refreshPasswordUseable(boolean openPassword) {
+    private void refreshPasswordActive(boolean openPassword) {
         itemChangePassword.setEnabled(openPassword);
         switchFingerprint.setEnabled(openPassword);
     }
