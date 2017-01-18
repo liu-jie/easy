@@ -50,6 +50,9 @@
         <activity android:name=".mine.view.AboutA_" />
         <activity android:name=".mine.view.PasswordA_" />
         <activity android:name=".mine.view.ChangePasswordA_" />
+        <activity
+            android:name=".main.view.CheckPasswordA_"
+            android:theme="@style/AppTheme.LightTheme" />
     </application>
 
 </manifest>

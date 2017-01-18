@@ -84,4 +84,5 @@ public class PasswordInputF extends BaseFragment implements PasswordInputOption 
             password_linerlayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
         }
     }
+
 }
