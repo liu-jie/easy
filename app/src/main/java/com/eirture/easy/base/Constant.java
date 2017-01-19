@@ -12,4 +12,5 @@ public class Constant {
     public static final int ERROR_CODE_SQL = 1;
 
     public static final String PICTURE_DIR_NAME = "easy";
+    public static final int DEFAULT_ALARM_TIME = 2100; // 21:00
 }

@@ -40,7 +40,7 @@ public class MineF extends MainFragment {
 
     @Click(R.id.item_alert)
     protected void clickAlert() {
-
+        NotificationA_.intent(this).start();
     }
 
     @Click(R.id.item_about)
