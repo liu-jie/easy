@@ -17,8 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.view.MainA_"
-            android:launchMode="singleInstance">
+            android:name=".main.view.MainA_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
