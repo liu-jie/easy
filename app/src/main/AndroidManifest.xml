@@ -16,8 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".main.view.MainA_">
+        <activity android:name=".main.view.MainA_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +50,7 @@
         <activity android:name=".mine.view.ChangePasswordA_" />
         <activity
             android:name=".main.view.CheckPasswordA_"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.LightTheme" />
         <activity android:name=".mine.view.NotificationA_" />
 

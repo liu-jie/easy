@@ -9,9 +9,15 @@ public class DateUtil {
     private static final String[] WEEK_DAYS = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     public static boolean isThisWeek(Date date) {
+        if (date == null)
+            return false;
+
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 1 - c.get(Calendar.DAY_OF_WEEK));
-        return c.getTime().before(date);
+        int year = c.get(Calendar.YEAR);
+        int beginWeekDay = c.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_WEEK) + 1;
+        c.setTime(date);
+        int dayOfYear = c.get(Calendar.DAY_OF_YEAR);
+        return c.get(Calendar.YEAR) == year && dayOfYear >= beginWeekDay && dayOfYear - beginWeekDay < 7;
     }
 
     public static String getWeekName(Date date) {
