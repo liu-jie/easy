@@ -41,6 +41,7 @@
                 android:text="@string/sync" />
 
             <TextView
+                android:id="@+id/tv_sync"
                 style="@style/MineItemArrowText"
                 android:text="已禁用" />
         </LinearLayout>

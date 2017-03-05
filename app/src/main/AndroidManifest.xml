@@ -68,6 +68,7 @@
         <activity android:name=".user.view.LoginA_" />
         <activity android:name=".user.view.RegisterA_" />
         <activity android:name=".user.view.UserDetailA_" />
+        <activity android:name=".mine.view.SyncA_" />
     </application>
 
 </manifest>

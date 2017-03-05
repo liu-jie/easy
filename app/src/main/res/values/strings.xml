@@ -37,6 +37,10 @@
     <string name="exit">退出</string>
     <string name="summary">简介</string>
     <string name="save">存储</string>
+    <string name="sync_config">同步配置</string>
+    <string name="sync_service">同步服务</string>
+    <string name="disabled">已禁用</string>
+    <string name="enabled">已启用</string>
 
     <string-array name="journal_item_options">
         <item>删除</item>
