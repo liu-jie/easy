@@ -43,9 +43,6 @@ public class MainA extends BusActivity {
     @ViewById
     Toolbar toolbar;
 
-    @ViewById(R.id.btn_left)
-    TextView tvTitle;
-
     @Bean
     NotebookP notebookP;
 
@@ -74,10 +71,6 @@ public class MainA extends BusActivity {
 
         changeNotebook(Notebook.DEFAULT_NOTEBOOK_ID);
 
-        RxView.clicks(tvTitle)
-                .subscribe(aVoid -> {
-                    Toast.makeText(this, "show ", Toast.LENGTH_SHORT).show();
-                });
     }
 
     private void changeNotebook(int notebookId) {
@@ -109,7 +102,6 @@ public class MainA extends BusActivity {
     }
 
     private void updateTitleAndRefresh(boolean agree) {
-        tvTitle.setVisibility(agree ? View.VISIBLE : View.GONE);
         swipeRefreshLayout.setEnabled(agree);
     }
 

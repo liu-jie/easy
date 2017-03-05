@@ -31,11 +31,6 @@ public class MineF extends MainFragment {
 
     }
 
-    @Click(R.id.item_notebook)
-    protected void clickNotebook() {
-
-    }
-
     @Click(R.id.item_lock)
     protected void clickLock() {
         PasswordA_.intent(this).start();

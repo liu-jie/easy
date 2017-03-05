@@ -44,23 +44,6 @@
                 android:text="已禁用" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/item_notebook"
-            style="@style/MineItemLayout">
-
-            <ImageView
-                style="@style/MineItemHeadImage"
-                android:src="@drawable/ic_notebook" />
-
-            <TextView
-                style="@style/MineItemDescriptionText"
-                android:text="@string/notebook" />
-
-            <TextView
-                style="@style/MineItemArrowText"
-                tools:text="3" />
-        </LinearLayout>
-
         <!-- 分割线 -->
 
         <LinearLayout

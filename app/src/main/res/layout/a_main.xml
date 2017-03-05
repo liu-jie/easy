@@ -13,19 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:id="@+id/btn_left"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawableRight="@drawable/ic_arrow_down"
-            android:gravity="center_vertical"
-            android:padding="4dp"
-            android:text="日记本"
-            android:textColor="@color/white" />
-
-    </android.support.v7.widget.Toolbar>
+        android:background="@color/colorPrimary"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
