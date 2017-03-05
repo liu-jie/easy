@@ -60,6 +60,7 @@ public class MineF extends MainFragment {
     protected void loginResult(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
             refreshUserName();
+            refreshSyncState();
         }
     }
 
@@ -69,6 +70,9 @@ public class MineF extends MainFragment {
 
         currentUser = AVUser.getCurrentUser();
         tvUsername.setText(currentUser == null ? "" : currentUser.getUsername());
+        if (currentUser == null) {
+            configPrefs.edit().openSync().put(false).apply();
+        }
     }
 
     @Click(R.id.item_sync)
