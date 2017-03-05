@@ -1,10 +1,13 @@
 #
-# generated on 2017/01/09 10:30:05
+# generated on 2017/03/05 03:13:03
 #
 # --table-start--
 dataClass=com.eirture.easy.main.model.Journal
 tableName=journal
 # --table-fields-start--
+# --field-start--
+fieldName=objectId
+# --field-end--
 # --field-start--
 fieldName=id
 canBeNull=false

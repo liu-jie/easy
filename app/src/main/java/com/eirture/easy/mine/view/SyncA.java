@@ -8,9 +8,11 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVUser;
 import com.eirture.easy.R;
 import com.eirture.easy.base.views.BaseActivity;
+import com.eirture.easy.edit.EditP;
 import com.eirture.easy.main.data.ConfigPrefs_;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -30,6 +32,8 @@ public class SyncA extends BaseActivity {
 
     @Pref
     ConfigPrefs_ configPrefs;
+    @Bean
+    EditP editP;
 
     @AfterViews
     protected void initViews() {
@@ -42,6 +46,9 @@ public class SyncA extends BaseActivity {
         scSync.setOnCheckedChangeListener((buttonView, isChecked) -> {
             configPrefs.edit().openSync().put(isChecked).apply();
             setResult(RESULT_OK);
+            if (isChecked) {
+                editP.sync();
+            }
         });
     }
 }

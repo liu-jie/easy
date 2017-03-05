@@ -54,4 +54,17 @@ public class EditP {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ObserverImpl<>(bus, DeleteJournalE.class));
     }
+
+    public void syncUpload() {
+        editR.syncUpload();
+    }
+
+    public void syncDownload() {
+        editR.syncDownload();
+    }
+
+    public void sync() {
+        syncUpload();
+        syncDownload();
+    }
 }
