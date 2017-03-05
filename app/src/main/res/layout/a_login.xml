@@ -23,13 +23,16 @@
             style="@style/EditorBarStyle.white"
             android:layout_marginTop="48dp"
             android:drawableLeft="@drawable/ic_account"
-            android:hint="@string/account_or_email" />
+            android:ems="24"
+            android:hint="@string/account_or_email"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/et_password"
             style="@style/EditorBarStyle.white"
             android:drawableLeft="@drawable/ic_lock"
-            android:hint="@string/password" />
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
 
         <TextView
