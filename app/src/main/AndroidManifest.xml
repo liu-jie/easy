@@ -53,7 +53,7 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.LightTheme" />
         <activity android:name=".mine.view.NotificationA_" />
-
+        <activity android:name=".user.view.LoginA_"/>
     </application>
 
 </manifest>

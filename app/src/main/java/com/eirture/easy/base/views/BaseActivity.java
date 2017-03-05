@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.eirture.easy.main.view.CheckPasswordA_;
@@ -70,5 +71,11 @@ public class BaseActivity extends AppCompatActivity {
         needPassword = false;
         super.finish();
 //        Log.d(TAG, "finish: " + getClass().getSimpleName());
+    }
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        super.setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> back(v));
     }
 }

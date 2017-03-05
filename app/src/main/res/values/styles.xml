@@ -103,4 +103,27 @@
         <item name="android:layout_marginRight">12dp</item>
     </style>
 
+    <style name="customToolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+    </style>
+
+    <style name="EditorBarStyle">
+        <item name="android:layout_height">@dimen/edit_bar_size</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="EditorBarStyle.white">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="ToolbarPopupTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>
+
 </resources>

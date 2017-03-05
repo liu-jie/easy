@@ -1,6 +1,6 @@
 package com.eirture.easy;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import org.androidannotations.annotations.EApplication;
 
@@ -8,7 +8,7 @@ import org.androidannotations.annotations.EApplication;
  * Created by eirture on 16-12-28.
  */
 @EApplication
-public class JApplication extends Application {
+public class JApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
