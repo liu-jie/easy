@@ -3,8 +3,14 @@ package com.eirture.easy.user.view;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 import com.eirture.easy.R;
+import com.eirture.easy.base.utils.MyTextWatch;
 import com.eirture.easy.base.views.BusActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -26,9 +32,59 @@ public class LoginA extends BusActivity {
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
+    @ViewById(R.id.btn_login)
+    TextView btnLogin;
+
     @AfterViews
     protected void initViews() {
+        initListeners();
         initMenu();
+    }
+
+    private void initListeners() {
+        MyTextWatch.createTextWatch(etPassword, 0, 6, new MyTextWatch.TextChangCallBack() {
+            @Override
+            public void call(int totalCount) {
+
+            }
+
+            @Override
+            public void changeStatus(boolean active) {
+                etPassword.setSelected(active);
+                refreshBtnState();
+            }
+        });
+        MyTextWatch.createTextWatch(etAccount, 0, 6, new MyTextWatch.TextChangCallBack() {
+            @Override
+            public void call(int totalCount) {
+
+            }
+
+            @Override
+            public void changeStatus(boolean active) {
+                etAccount.setSelected(active);
+                refreshBtnState();
+            }
+        });
+
+        btnLogin.setOnClickListener(v -> {
+            AVUser.logInInBackground(etAccount.getText().toString(), etPassword.getText().toString(), new LogInCallback<AVUser>() {
+                @Override
+                public void done(AVUser avUser, AVException e) {
+                    if (e == null) {
+                        setResult(RESULT_OK);
+                        finish();
+                        return;
+                    }
+
+                    Toast.makeText(LoginA.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private void refreshBtnState() {
+        btnLogin.setActivated(etPassword.isSelected() && etAccount.isSelected());
     }
 
     private void initMenu() {

@@ -23,6 +23,7 @@
                 android:text="@string/account" />
 
             <TextView
+                android:id="@+id/tv_username"
                 style="@style/MineItemArrowText"
                 tools:text="登录" />
         </LinearLayout>

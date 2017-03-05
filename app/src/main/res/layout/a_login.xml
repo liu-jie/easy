@@ -36,13 +36,14 @@
 
 
         <TextView
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_bar_size"
             android:layout_marginTop="32dp"
             android:background="@color/white"
             android:gravity="center"
             android:text="@string/login"
-            android:textColor="@color/black"
+            android:textColor="@color/text_dark"
             android:textSize="16sp" />
 
     </LinearLayout>

@@ -32,6 +32,11 @@
     <string name="email">邮箱</string>
     <string name="account_or_email">账号/邮箱</string>
     <string name="login">登录</string>
+    <string name="edit_account">编辑账户</string>
+    <string name="name">姓名</string>
+    <string name="exit">退出</string>
+    <string name="summary">简介</string>
+    <string name="save">存储</string>
 
     <string-array name="journal_item_options">
         <item>删除</item>
