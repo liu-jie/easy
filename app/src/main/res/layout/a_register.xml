@@ -21,7 +21,7 @@
             android:id="@+id/et_account"
             style="@style/EditorBarStyle.white"
             android:layout_marginTop="48dp"
-            android:drawableLeft="@drawable/ic_account"
+            android:drawableLeft="@drawable/sel_account_gray_primary"
             android:ems="16"
             android:hint="@string/account"
             android:imeOptions="actionNext"
@@ -30,7 +30,7 @@
         <EditText
             android:id="@+id/et_email"
             style="@style/EditorBarStyle.white"
-            android:drawableLeft="@drawable/ic_email"
+            android:drawableLeft="@drawable/sel_email_gray_primary"
             android:ems="10"
             android:hint="@string/email"
             android:imeOptions="actionNext"
@@ -40,7 +40,7 @@
         <EditText
             android:id="@+id/et_password"
             style="@style/EditorBarStyle.white"
-            android:drawableLeft="@drawable/ic_lock"
+            android:drawableLeft="@drawable/sel_password_gray_primary"
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword" />
@@ -48,7 +48,7 @@
         <EditText
             android:id="@+id/et_password_confirm"
             style="@style/EditorBarStyle.white"
-            android:drawableLeft="@drawable/ic_lock"
+            android:drawableLeft="@drawable/sel_password_gray_primary"
             android:ems="10"
             android:hint="@string/password_confirm"
             android:inputType="textPassword" />
@@ -60,9 +60,10 @@
             android:layout_height="@dimen/edit_bar_size"
             android:layout_marginTop="32dp"
             android:background="@color/white"
+            android:enabled="false"
             android:gravity="center"
             android:text="@string/register"
-            android:textColor="@color/black"
+            android:textColor="@color/text_dark"
             android:textSize="16sp" />
 
     </LinearLayout>

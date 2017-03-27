@@ -18,6 +18,20 @@ public class MyTextWatch implements TextWatcher {
         editText.addTextChangedListener(new MyTextWatch(editText, maxLength, minLength, callBack));
     }
 
+    public static void createSimpleTextWatch(EditText editText, int maxLength, int minLength, final SimpleTextChangeCallback callback) {
+        createTextWatch(editText, maxLength, minLength, new TextChangCallBack() {
+            @Override
+            public void call(int totalCount) {
+
+            }
+
+            @Override
+            public void changeStatus(boolean active) {
+                callback.change(active);
+            }
+        });
+    }
+
     private MyTextWatch(EditText editText, int maxLength, int minLength, TextChangCallBack mCallBack) {
         this.mCallBack = mCallBack;
         this.minLength = minLength;
@@ -60,5 +74,10 @@ public class MyTextWatch implements TextWatcher {
         void call(int totalCount);
 
         void changeStatus(boolean active);
+    }
+
+    @FunctionalInterface
+    public interface SimpleTextChangeCallback {
+        void change(boolean active);
     }
 }

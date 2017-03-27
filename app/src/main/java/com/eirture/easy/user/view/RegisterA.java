@@ -1,6 +1,7 @@
 package com.eirture.easy.user.view;
 
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.EditText;
 
 import com.eirture.easy.R;
@@ -30,41 +31,28 @@ public class RegisterA extends BusActivity {
     EditText etPassword;
     @ViewById(R.id.et_password_confirm)
     EditText etPasswordConfirm;
-
-    private byte checkFlag = 0;
+    @ViewById(R.id.btn_register)
+    View btnRegister;
 
     @AfterViews
     protected void initViews() {
         setSupportActionBar(toolbar);
+        refreshBtnStatus();
 
-        MyTextWatch.createTextWatch(etAccount, 16, 6, new MyTextWatch.TextChangCallBack() {
-            @Override
-            public void call(int totalCount) {
-
-            }
-
-            @Override
-            public void changeStatus(boolean active) {
-                if (active) {
-                    checkFlag |= 1;
-                } else {
-                    checkFlag &= 0;
-                }
-            }
-        });
-        MyTextWatch.createTextWatch(etEmail, 24, 6, new MyTextWatch.TextChangCallBack() {
-            @Override
-            public void call(int totalCount) {
-
-            }
-
-            @Override
-            public void changeStatus(boolean active) {
-
-            }
-        });
+        MyTextWatch.createSimpleTextWatch(etAccount, 16, 6, active -> changeEditStatus(etAccount, active));
+        MyTextWatch.createSimpleTextWatch(etEmail, 24, 6, active -> changeEditStatus(etEmail, active));
+        MyTextWatch.createSimpleTextWatch(etPassword, 0, 6, active -> changeEditStatus(etPassword, active));
+        MyTextWatch.createSimpleTextWatch(etPasswordConfirm, 0, 6, active -> changeEditStatus(etPasswordConfirm, active));
     }
 
+    private void changeEditStatus(EditText editText, boolean active) {
+        editText.setSelected(active);
+        refreshBtnStatus();
+    }
+
+    private void refreshBtnStatus() {
+        btnRegister.setEnabled(etEmail.isSelected() && etAccount.isSelected());
+    }
 
     @Click(R.id.btn_register)
     protected void clickRegister() {

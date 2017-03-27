@@ -22,7 +22,7 @@
             android:id="@+id/et_account"
             style="@style/EditorBarStyle.white"
             android:layout_marginTop="48dp"
-            android:drawableLeft="@drawable/ic_account"
+            android:drawableLeft="@drawable/sel_account_gray_primary"
             android:ems="24"
             android:hint="@string/account_or_email"
             android:inputType="text" />
@@ -30,7 +30,7 @@
         <EditText
             android:id="@+id/et_password"
             style="@style/EditorBarStyle.white"
-            android:drawableLeft="@drawable/ic_lock"
+            android:drawableLeft="@drawable/sel_password_gray_primary"
             android:hint="@string/password"
             android:inputType="textPassword" />
 

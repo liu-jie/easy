@@ -37,6 +37,8 @@ public class LoginA extends BusActivity {
 
     @AfterViews
     protected void initViews() {
+        refreshBtnState();
+
         initListeners();
         initMenu();
     }
@@ -84,7 +86,7 @@ public class LoginA extends BusActivity {
     }
 
     private void refreshBtnState() {
-        btnLogin.setActivated(etPassword.isSelected() && etAccount.isSelected());
+        btnLogin.setEnabled(etPassword.isSelected() && etAccount.isSelected());
     }
 
     private void initMenu() {
